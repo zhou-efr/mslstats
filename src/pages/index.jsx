@@ -6,11 +6,8 @@ import { useState } from 'react'
 import { GenericButton } from '@/components/GenericButton';
 import ObjectDisplayer from '@/components/ObjectDisplayer';
 
-
-export default function Home({ episodes }) {
+const TokenRoute = () => {
   const [token, setToken] = useState();
-  const [user, setUser] = useState();
-  const [stream, setStream] = useState("no stream yet");
 
   const handleGetToken = async () => {
     const response = await fetch('/api/twitch/token', {
@@ -22,6 +19,25 @@ export default function Home({ episodes }) {
     const data = await response.json()
     setToken(data);
   }
+
+  return (
+    <>
+      <GenericButton onClick={handleGetToken} variant="primary" size="medium">Get Token</GenericButton>
+      <span className="text-sm font-medium text-slate-900">
+        {
+          token ? (
+            <ObjectDisplayer object={token} name={"token"} subtext={"tqt c'est mon token"} />
+          ) : (
+            <div>no token yet</div>
+          )
+        }
+      </span>
+    </>
+  )
+}
+
+const UserRoute = () => {
+  const [user, setUser] = useState();
 
   const handleGetUser = async () => {
     const response = await fetch('/api/twitch/user', {
@@ -35,6 +51,25 @@ export default function Home({ episodes }) {
     setUser(data.user);
   }
 
+  return (
+    <>
+      <GenericButton onClick={handleGetUser} variant="primary" size="medium">Get User</GenericButton>
+      <span className="text-sm font-medium text-slate-900">
+        {
+          user ? (
+            <ObjectDisplayer object={user} name={user.login} subtext={user.description} />
+          ) : (
+            <div>no user yet</div>
+          )
+        }
+      </span>
+    </>
+  );
+}
+
+const StreamRoute = () => {
+  const [streams, setStreams] = useState();
+
   const handleGetStream = async () => {
     const response = await fetch('/api/twitch/laststream', {
       method: 'POST',
@@ -44,8 +79,27 @@ export default function Home({ episodes }) {
       body: JSON.stringify({ user_id: '798312463' }),
     })
     const data = await response.json()
-    setStream(JSON.stringify(data));
+    setStreams(data.stream);
   }
+
+  console.log(streams);
+
+  return (
+    <>
+      <GenericButton onClick={handleGetStream} variant="primary" size="medium">Get Stream</GenericButton>
+      {
+        streams ? streams.map((stream) => <ObjectDisplayer object={stream} name={stream.title} subtext={stream.id} />)
+          : (
+            <span className="text-sm font-medium text-slate-900">
+              no stream yet
+            </span>
+          )
+      }
+    </>
+  )
+}
+
+export default function Home() {
 
   return (
     <>
@@ -65,34 +119,10 @@ export default function Home({ episodes }) {
           </h1>
         </Container>
         <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100 py-10">
-          <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12">
-            <GenericButton onClick={handleGetToken} variant="primary" size="medium">Get Token</GenericButton>
-            <span className="text-sm font-medium text-slate-900">
-              {
-                token ? (
-                  <ObjectDisplayer object={token} name={"token"} subtext={"tqt c'est mon token"} />
-                ) : (
-                  <div>no token yet</div>
-                )
-              }
-            </span>
-
-            <GenericButton onClick={handleGetUser} variant="primary" size="medium">Get User</GenericButton>
-            <span className="text-sm font-medium text-slate-900">
-              {
-                user ? (
-                  <ObjectDisplayer object={user} name={user.login} subtext={user.description} />
-                ) : (
-                  <div>no user yet</div>
-                )
-              }
-            </span>
-
-            <GenericButton onClick={handleGetStream} variant="primary" size="medium">Get Stream</GenericButton>
-            <span className="text-sm font-medium text-slate-900">
-              {stream}
-            </span>
-
+          <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5">
+            <TokenRoute />
+            <UserRoute />
+            <StreamRoute />
           </div>
         </div>
       </div>

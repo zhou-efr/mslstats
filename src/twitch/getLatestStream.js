@@ -8,9 +8,10 @@ export const getLatestStream = async (user_id) => {
         myHeaders.append("Client-Id", process.env["TWITCH_CLIENT_ID"]);
 
         let urlencoded = new URLSearchParams();
-        urlencoded.append("id", "335921245");
-        // urlencoded.append("user_id", user_id);
-        // urlencoded.append("first", "1");
+        // urlencoded.append("id", "335921245");
+        urlencoded.append("user_id", user_id);
+        urlencoded.append("sort", "time");
+        urlencoded.append("first", "3");
 
         let requestOptions = {
             method: 'GET',
@@ -20,14 +21,14 @@ export const getLatestStream = async (user_id) => {
 
         console.log(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded);
 
-        const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/streams?" + urlencoded, requestOptions);
+        const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded, requestOptions);
         const data = await res.json();
 
         if (res.status != 200) {
             throw new Error(`getLatestStream - ${res.status} : ${JSON.stringify(data)}`);
         }
 
-        return data;
+        return data.data;
     } catch (error) {
         throw new Error(`getLatestStream : ${channel} - ${JSON.stringify(error)}`);
     }

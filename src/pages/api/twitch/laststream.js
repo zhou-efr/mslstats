@@ -1,13 +1,13 @@
 import { getLatestStream } from '@/twitch/getLatestStream'
 
 export default async function handler(req, res) {
-    const { channel } = req.body;
+    const { user_id } = req.body;
 
     let status = 200;
     let response = {};
 
     try {
-        const stream = await getLatestStream(channel);
+        const stream = await getLatestStream(user_id);
         response = { stream };
     } catch (error) {
         console.log(error);
