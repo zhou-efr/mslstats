@@ -26,6 +26,12 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        env:
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          TWITCH_TOKEN_URL: ${{ env.TWITCH_TOKEN_URL }}
+          TWITCH_API_URL: ${{ env.TWITCH_API_URL }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
