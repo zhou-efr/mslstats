@@ -46,7 +46,7 @@ export default function Tabs() {
                     id="tabs"
                     name="tabs"
                     className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                    defaultValue={tabs.find((tab) => tab.current).name}
+                    defaultValue={tabs.find((tab) => tab.current)?.name}
                     onChange={(e) => handleChooseTab(tabs.find((tab) => tab.name === e.target.value))}
                 >
                     {tabs.map((tab) => (
