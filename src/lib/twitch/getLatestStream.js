@@ -1,6 +1,6 @@
 import { getToken } from '@/lib/twitch/getToken'
 
-export const getLatestStream = async (user_ids, first = 3, period = "") => {
+export const getLatestStream = async (user_id, first = 3, period = "") => {
     try {
         const token = await getToken();
         let myHeaders = new Headers();
@@ -8,7 +8,7 @@ export const getLatestStream = async (user_ids, first = 3, period = "") => {
         myHeaders.append("Client-Id", process.env["TWITCH_CLIENT_ID"]);
 
         let urlencoded = new URLSearchParams();
-        urlencoded.append("user_id", user_ids);
+        urlencoded.append("user_id", user_id);
         urlencoded.append("sort", "time");
         urlencoded.append("first", first);
 
