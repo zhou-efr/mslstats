@@ -1,6 +1,6 @@
-import { getToken } from '@/twitch/getToken'
+import { getToken } from '@/lib/twitch/getToken'
 
-export const getLatestStream = async (user_id) => {
+export const getStream = async (stream_id) => {
     try {
         const token = await getToken();
         let myHeaders = new Headers();
@@ -8,10 +8,9 @@ export const getLatestStream = async (user_id) => {
         myHeaders.append("Client-Id", process.env["TWITCH_CLIENT_ID"]);
 
         let urlencoded = new URLSearchParams();
-        // urlencoded.append("id", "335921245");
-        urlencoded.append("user_id", user_id);
-        urlencoded.append("sort", "time");
-        urlencoded.append("first", "3");
+        urlencoded.append("id", stream_id);
+        // urlencoded.append("user_id", user_id);
+        // urlencoded.append("sort", "time");
 
         let requestOptions = {
             method: 'GET',
@@ -28,8 +27,8 @@ export const getLatestStream = async (user_id) => {
             throw new Error(`getLatestStream - ${res.status} : ${JSON.stringify(data)}`);
         }
 
-        return data.data;
+        return data.data[0];
     } catch (error) {
-        throw new Error(`getLatestStream : ${channel} - ${JSON.stringify(error)}`);
+        throw new Error(`getLatestStream : ${stream_id} - ${JSON.stringify(error)}`);
     }
 }

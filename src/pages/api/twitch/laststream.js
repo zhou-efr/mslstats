@@ -1,4 +1,4 @@
-import { getLatestStream } from '@/twitch/getLatestStream'
+import { getLatestStream } from "@twitch/getLatestStream";
 
 export default async function handler(req, res) {
     const { user_id } = req.body;

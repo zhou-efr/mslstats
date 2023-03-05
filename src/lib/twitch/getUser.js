@@ -1,4 +1,4 @@
-import { getToken } from '@/twitch/getToken'
+import { getToken } from '@/lib/twitch/getToken'
 
 export const getUser = async (username) => {
     try {

@@ -1,131 +1,314 @@
-import Head from 'next/head'
+import { Fragment, useMemo } from 'react'
+import {
+    CalendarIcon,
+    EllipsisHorizontalIcon,
+    MapPinIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    VideoCameraIcon,
+} from '@heroicons/react/20/solid'
+import { Menu, Transition } from '@headlessui/react'
+import React, { useState } from 'react';
+import Calendar from 'react-calendar';
+import Image from 'next/image';
+import 'react-calendar/dist/Calendar.css';
+import Link from 'next/link';
+import { getLatestStream } from "@twitch/getLatestStream";
+import { getCurrentStream } from '@twitch/getCurrentStream';
+import { today } from '@internationalized/date';
 
-import { Container } from '@/components/Container'
+const meetings = [
+    {
+        id: 1,
+        date: 'January 10th, 2022',
+        time: '5:00 PM',
+        datetime: '2022-01-10T17:00',
+        name: 'Leslie Alexander',
+        imageUrl:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        location: 'Starbucks',
+    },
+    // More meetings...
+]
 
-import { useState } from 'react'
-import { GenericButton } from '@/components/GenericButton';
-import ObjectDisplayer from '@/components/ObjectDisplayer';
+const days = [
+    { date: '2021-12-27' },
+    { date: '2021-12-28' },
+    { date: '2021-12-29' },
+    { date: '2021-12-30' },
+    { date: '2021-12-31' },
+    { date: '2022-01-01', isCurrentMonth: true },
+    { date: '2022-01-02', isCurrentMonth: true },
+    { date: '2022-01-03', isCurrentMonth: true },
+    { date: '2022-01-04', isCurrentMonth: true },
+    { date: '2022-01-05', isCurrentMonth: true },
+    { date: '2022-01-06', isCurrentMonth: true },
+    { date: '2022-01-07', isCurrentMonth: true },
+    { date: '2022-01-08', isCurrentMonth: true },
+    { date: '2022-01-09', isCurrentMonth: true },
+    { date: '2022-01-10', isCurrentMonth: true },
+    { date: '2022-01-11', isCurrentMonth: true },
+    { date: '2022-01-12', isCurrentMonth: true, isToday: true },
+    { date: '2022-01-13', isCurrentMonth: true },
+    { date: '2022-01-14', isCurrentMonth: true },
+    { date: '2022-01-15', isCurrentMonth: true },
+    { date: '2022-01-16', isCurrentMonth: true },
+    { date: '2022-01-17', isCurrentMonth: true },
+    { date: '2022-01-18', isCurrentMonth: true },
+    { date: '2022-01-19', isCurrentMonth: true },
+    { date: '2022-01-20', isCurrentMonth: true },
+    { date: '2022-01-21', isCurrentMonth: true },
+    { date: '2022-01-22', isCurrentMonth: true, isSelected: true },
+    { date: '2022-01-23', isCurrentMonth: true },
+    { date: '2022-01-24', isCurrentMonth: true },
+    { date: '2022-01-25', isCurrentMonth: true },
+    { date: '2022-01-26', isCurrentMonth: true },
+    { date: '2022-01-27', isCurrentMonth: true },
+    { date: '2022-01-28', isCurrentMonth: true },
+    { date: '2022-01-29', isCurrentMonth: true },
+    { date: '2022-01-30', isCurrentMonth: true },
+    { date: '2022-01-31', isCurrentMonth: true },
+    { date: '2022-02-01' },
+    { date: '2022-02-02' },
+    { date: '2022-02-03' },
+    { date: '2022-02-04' },
+    { date: '2022-02-05' },
+    { date: '2022-02-06' },
+]
 
-const TokenRoute = () => {
-  const [token, setToken] = useState();
+const months = [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre',
+]
 
-  const handleGetToken = async () => {
-    const response = await fetch('/api/twitch/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-    setToken(data);
-  }
-
-  return (
-    <>
-      <GenericButton onClick={handleGetToken} variant="primary" size="medium">Get Token</GenericButton>
-      <span className="text-sm font-medium text-slate-900">
-        {
-          token ? (
-            <ObjectDisplayer object={token} name={"token"} subtext={"tqt c'est mon token"} />
-          ) : (
-            <div>no token yet</div>
-          )
-        }
-      </span>
-    </>
-  )
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
 }
 
-const UserRoute = () => {
-  const [user, setUser] = useState();
+function getDateOfWeek(w, y) {
+    var d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
 
-  const handleGetUser = async () => {
-    const response = await fetch('/api/twitch/user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: 'mathieusommetlive' }),
-    })
-    const data = await response.json()
-    setUser(data.user);
-  }
-
-  return (
-    <>
-      <GenericButton onClick={handleGetUser} variant="primary" size="medium">Get User</GenericButton>
-      <span className="text-sm font-medium text-slate-900">
-        {
-          user ? (
-            <ObjectDisplayer object={user} name={user.login} subtext={user.description} />
-          ) : (
-            <div>no user yet</div>
-          )
-        }
-      </span>
-    </>
-  );
+    return new Date(y, 0, d);
 }
 
-const StreamRoute = () => {
-  const [streams, setStreams] = useState();
+const getMonthList = (month, year) => {
+    const today = new Date();
+    const basedMonth = month;
 
-  const handleGetStream = async () => {
-    const response = await fetch('/api/twitch/laststream', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ user_id: '798312463' }),
-    })
-    const data = await response.json()
-    setStreams(data.stream);
-  }
+    // get the first day of the first week of the month
+    const firstDayOfMonth = new Date(year, basedMonth, 1);
+    const firstWeekOfMonth = firstDayOfMonth.getWeek();
+    const firstDay = getDateOfWeek(firstWeekOfMonth, year);
 
-  console.log(streams);
+    // console.log(firstDay.toLocaleDateString("fr-FR"));
+    // console.log(firstDayOfMonth.toLocaleDateString("fr-FR"));
+    // console.log(firstWeekOfMonth);
 
-  return (
-    <>
-      <GenericButton onClick={handleGetStream} variant="primary" size="medium">Get Stream</GenericButton>
-      {
-        streams ? streams.map((stream) => <ObjectDisplayer object={stream} name={stream.title} subtext={stream.id} />)
-          : (
-            <span className="text-sm font-medium text-slate-900">
-              no stream yet
-            </span>
-          )
-      }
-    </>
-  )
+    // get the last day of the last week of the month
+    const lastDayOfMonth = new Date(year, basedMonth + 1, 0);
+    const lastWeekOfMonth = lastDayOfMonth.getWeek();
+    const firstDayOfLastWeekOfMonth = getDateOfWeek(lastWeekOfMonth, year);
+    const lastDay = new Date(firstDayOfLastWeekOfMonth.getTime() + 6 * 24 * 60 * 60 * 1000);
+
+    // console.log(lastDay.toLocaleDateString("fr-FR"));
+    // console.log(lastDayOfMonth.toLocaleDateString("fr-FR"));
+    // console.log(lastWeekOfMonth);
+
+    const basedMonthList = [];
+    let i = firstDay;
+
+    while (i <= lastDay) {
+        basedMonthList.push({
+            date: i.toLocaleDateString("fr-FR"),
+            isCurrentMonth: i.getMonth() === basedMonth,
+            isToday: i.toLocaleDateString("fr-FR") === today.toLocaleDateString("fr-FR"),
+            isSelected: i.toLocaleDateString("fr-FR") === today.toLocaleDateString("fr-FR"),
+        });
+        i = new Date(i.getTime() + 24 * 60 * 60 * 1000);
+    }
+
+    return basedMonthList;
 }
 
-export default function Home() {
+export async function getServerSideProps(context) {
+    const streamer_id = "798312463"
+    const current_stream = await getCurrentStream(streamer_id)
+    const streams = await getLatestStream(streamer_id, 31, "month");
 
-  return (
-    <>
-      <Head>
-        <title>
-          MSL
-        </title>
-        <meta
-          name="description"
-          content="Conversations with the most tragically misunderstood people of our time."
-        />
-      </Head>
-      <div className="pt-16 pb-12 sm:pb-4 lg:pt-12">
-        <Container>
-          <h1 className="text-2xl font-bold leading-7 text-slate-900">
-            Statistiques
-          </h1>
-        </Container>
-        <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100 py-10">
-          <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5">
-            <TokenRoute />
-            <UserRoute />
-            <StreamRoute />
-          </div>
+    console.log(current_stream);
+    if (current_stream) {
+        streams[0].live = true;
+        streams[0].thumbnail_url = current_stream.thumbnail_url;
+        streams[0].url = "https://www.twitch.tv/mathieusommetlive";
+    }
+
+    const basedMonthList = getMonthList(new Date().getMonth(), today.getFullYear());
+
+    return {
+        props: {
+            streams,
+            basedMonth,
+            basedMonthList
+        },
+    }
+}
+
+Date.prototype.getWeek = function () {
+    var date = new Date(this.getTime());
+    date.setHours(0, 0, 0, 0);
+    // Thursday in current week decides the year.
+    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+    // January 4 is always in week 1.
+    var week1 = new Date(date.getFullYear(), 0, 4);
+    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
+        - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
+export default function HomePage({ streams, basedMonth, basedMonthList }) {
+    const [currentMonth, setCurrentMonth] = useState(basedMonth);
+    const [monthList, setMonthList] = useState(basedMonthList);
+
+    const [value, onChange] = useState(new Date());
+    const displayedStreams = useMemo(() => {
+        return streams.filter((stream) => {
+            // stream done during the week of the selected date
+            const streamDate = new Date(stream.published_at);
+            const streamWeek = streamDate.getWeek();
+            const selectedWeek = value.getWeek();
+
+            return streamWeek === selectedWeek;
+        });
+    }, [streams, value]);
+
+    const handleMonthChange = (month) => {
+        setCurrentMonth(month);
+        setMonthList(getMonthList(month, new Date().getFullYear()));
+    }
+
+    return (
+        <div className='px-8 flex flex-col items-center lg:items-start'>
+            <h2 className="text-base font-semibold leading-6 text-gray-900">Streams de la semaine</h2>
+            <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
+                <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
+                    <div className="flex items-center text-gray-900">
+                        <button
+                            type="button"
+                            onClick={() => handleMonthChange((currentMonth - 1) % 12)}
+                            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                        >
+                            <span className="sr-only">Previous month</span>
+                            <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                        </button>
+                        <div className="flex-auto text-sm font-semibold">{months[currentMonth]}</div>
+                        <button
+                            type="button"
+                            onClick={() => handleMonthChange((currentMonth + 1) % 12)}
+                            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                        >
+                            <span className="sr-only">Next month</span>
+                            <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                        </button>
+                    </div>
+                    <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+                        <div>M</div>
+                        <div>T</div>
+                        <div>W</div>
+                        <div>T</div>
+                        <div>F</div>
+                        <div>S</div>
+                        <div>S</div>
+                    </div>
+                    <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+                        {monthList.map((day, dayIdx) => (
+                            <button
+                                key={day.date}
+                                type="button"
+                                className={classNames(
+                                    'py-1.5 hover:bg-gray-100 focus:z-10',
+                                    day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
+                                    (day.isSelected || day.isToday) && 'font-semibold',
+                                    day.isSelected && 'text-white',
+                                    !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900',
+                                    !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400',
+                                    day.isToday && !day.isSelected && 'text-indigo-600',
+                                    dayIdx === 0 && 'rounded-tl-lg',
+                                    dayIdx === 6 && 'rounded-tr-lg',
+                                    dayIdx === days.length - 7 && 'rounded-bl-lg',
+                                    dayIdx === days.length - 1 && 'rounded-br-lg'
+                                )}
+                            >
+                                <time
+                                    dateTime={day.date}
+                                    className={classNames(
+                                        'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                                        day.isSelected && day.isToday && 'bg-indigo-600',
+                                        day.isSelected && !day.isToday && 'bg-gray-900'
+                                    )}
+                                >
+                                    {day.date.split('/')[0]}
+                                </time>
+                            </button>
+                        ))}
+                    </div>
+                    <button
+                        type="button"
+                        className="mt-8 w-full rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        Add event
+                    </button>
+                </div>
+                <ol className="mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8">
+                    {displayedStreams.map((meeting) => (
+                        <li key={meeting.id} className="relative flex space-x-6 py-6 xl:static">
+                            <Image width={56} height={56} src={meeting.thumbnail_url.replace("%{width}", "56").replace("%{height}", "56").replace("{width}", "56").replace("{height}", "56")} alt="" className="h-14 w-14 flex-none rounded-md" />
+                            <div className="flex-auto">
+                                <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">
+                                    <Link href={meeting.url} className="hover:text-indigo-900 cursor-pointer" target={"_blank"}>
+                                        {meeting.title}
+                                    </Link>
+                                </h3>
+                                <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
+                                    <div className="flex items-start space-x-3">
+                                        <dt className="mt-0.5">
+                                            <span className="sr-only">Date</span>
+                                            <CalendarIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                        </dt>
+                                        <dd>
+                                            <time dateTime={meeting.published_at}>
+                                                {(new Date(meeting.published_at)).toLocaleDateString("fr-FR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                            </time>
+                                        </dd>
+                                    </div>
+                                    <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
+                                        <Link href={meeting.url} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-indigo-600 hover:text-indigo-900"} cursor-pointer`} target={"_blank"}>
+                                            <dt className="mt-0.5">
+                                                <span className="sr-only">Location</span>
+                                                <VideoCameraIcon className={`h-5 w-5 ${meeting.live ? "text-red-500" : "text-gray-400"}`} aria-hidden="true" />
+                                            </dt>
+                                            <dd>
+
+                                                {meeting.live ? "Live" : "Lien"}
+                                            </dd>
+
+                                        </Link>
+                                    </div>
+                                </dl>
+                            </div>
+                        </li>
+                    ))}
+                </ol>
+            </div>
         </div>
-      </div>
-    </>
-  )
+    )
 }

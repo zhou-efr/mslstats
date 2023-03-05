@@ -1,14 +1,14 @@
-import { getUser } from "@twitch/getUser";
+import { getLatestStream } from "@twitch/getLatestStream";
 
 export default async function handler(req, res) {
-    const { username } = req.body;
+    const { user_id } = req.body;
 
     let status = 200;
     let response = {};
 
     try {
-        const user = await getUser(username);
-        response = { user };
+        const stream = await getLatestStream(user_id, first = 31, period = "month");
+        response = { stream };
     } catch (error) {
         console.log(error);
         status = 500;

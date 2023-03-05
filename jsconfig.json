@@ -2,7 +2,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@mongo/*": [
+        "src/lib/mongoose/*"
+      ],
+      "@twitch/*": [
+        "src/lib/twitch/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     }
   }
 }

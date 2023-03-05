@@ -3,7 +3,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
+import { Container } from './Container'
+
 import mslicon from '@/images/msl.jpg'
+import Tabs from './Tabs'
 
 function randomBetween(min, max, seed = 1) {
   return () => {
@@ -71,7 +74,10 @@ function AboutSection(props) {
           !isExpanded && 'lg:line-clamp-4'
         )}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam elit quam, ornare nec turpis sed, molestie interdum sapien. Aenean in orci nisl. Sed sodales turpis sed ipsum aliquet varius. Quisque at ultrices diam, eget aliquet nulla. Proin porta accumsan quam sed facilisis. Donec massa augue, lacinia in mattis ultrices, rutrum et tellus. Phasellus non magna non sapien eleifend sollicitudin. Quisque vehicula euismod velit at facilisis. Suspendisse sed leo massa.
+        Ce site a été créé car j{"'"}apprécie beaucoup les lives de Mathieu Sommet et je voulais créer quelque chose de
+        drôle autour de ses diffusions en direct. Le but de ce site n{"'"}est pas de fournir des statistiques toxiques
+        ou de nuire à l{"'"}expérience de streaming de Mathieu Sommet, mais plutôt de créer une interface coolos et
+        pratique.
       </p>
       {!isExpanded && (
         <button
@@ -127,7 +133,7 @@ export function Layout({ children }) {
               <Link href="/">Mathieu Sommet Live</Link>
             </p>
             <p className="mt-3 text-lg font-medium leading-8 text-slate-700">
-              Maître Filou spécialisé Coolos. Active le mode difficile ou s'ennuie.
+              Maître Filou spécialisé Coolos. Active le mode difficile ou s{"'"}ennuie.
             </p>
           </div>
           <AboutSection className="mt-12 hidden lg:block" />
@@ -163,7 +169,16 @@ export function Layout({ children }) {
         </div>
       </header>
       <main className="border-t border-slate-200 lg:relative lg:mb-28 lg:ml-112 lg:border-t-0 xl:ml-120">
-        <div className="relative">{children}</div>
+        <div className="relative">
+          <div className="pt-16 pb-12 sm:pb-4 lg:pt-12">
+            <Container>
+              <Tabs />
+            </Container>
+            <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100 py-10">
+              {children}
+            </div>
+          </div>
+        </div>
       </main>
       <footer className="border-t border-slate-200 bg-slate-50 py-10 pb-40 sm:py-16 sm:pb-32 lg:hidden">
         <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4">

@@ -4,6 +4,23 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.twitch.tv',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static-cdn.jtvnw.net',
+      },
+    ],
+  },
+
 }
 
 module.exports = nextConfig
