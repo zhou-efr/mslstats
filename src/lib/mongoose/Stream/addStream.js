@@ -1,5 +1,5 @@
 import Stream from './StreamModel';
-import dbConnect from './dbConnect';
+import dbConnect from '../dbConnect';
 
 export const addStream = async (newStream) => {
     try {
