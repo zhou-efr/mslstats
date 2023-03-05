@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default function RegisterPage({ stream, gamelist }) {
+export default function RegisterPage({ stream = [], gamelist = [] }) {
     const router = useRouter();
 
     const [registration, setRegistration] = useState({

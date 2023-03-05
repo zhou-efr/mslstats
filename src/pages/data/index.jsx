@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default function DataPages({ streams }) {
+export default function DataPages({ streams = [] }) {
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">

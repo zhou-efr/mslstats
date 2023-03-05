@@ -199,7 +199,7 @@ Date.prototype.getWeek = function () {
         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
-export default function HomePage({ streams, basedMonth, basedMonthList }) {
+export default function HomePage({ streams = [], basedMonth = 0, basedMonthList = [] }) {
     const [currentMonth, setCurrentMonth] = useState(basedMonth);
     const [monthList, setMonthList] = useState(basedMonthList);
 
