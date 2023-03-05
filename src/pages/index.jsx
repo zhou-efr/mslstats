@@ -152,11 +152,35 @@ export async function getServerSideProps(context) {
         streams[0].url = "https://www.twitch.tv/mathieusommetlive";
     }
 
-    const basedMonthList = getMonthList(new Date().getMonth(), today.getFullYear());
+    const today = new Date();
+    const basedMonth = today.getMonth();
+    const basedMonthList = getMonthList(basedMonth, today.getFullYear());
+    const streams_by_week = {}
+
+    streams.forEach(element => {
+        const date = new Date(element.published_at);
+        const week = date.getWeek();
+        const year = date.getFullYear();
+
+        // console.log(element.published_at)
+        // console.log(date.toLocaleDateString("fr-FR"));
+        // console.log(week);
+        // console.log(year);
+
+        if (streams_by_week[year] === undefined) {
+            streams_by_week[year] = {}
+        }
+
+        if (streams_by_week[year][week] === undefined) {
+            streams_by_week[year][week] = []
+        }
+
+        streams_by_week[year][week].push(element);
+    });
 
     return {
         props: {
-            streams,
+            streams: streams_by_week,
             basedMonth,
             basedMonthList
         },
@@ -181,19 +205,36 @@ export default function HomePage({ streams, basedMonth, basedMonthList }) {
 
     const [value, onChange] = useState(new Date());
     const displayedStreams = useMemo(() => {
-        return streams.filter((stream) => {
-            // stream done during the week of the selected date
-            const streamDate = new Date(stream.published_at);
-            const streamWeek = streamDate.getWeek();
-            const selectedWeek = value.getWeek();
+        const selectedWeek = value.getWeek();
+        const selectedYear = value.getFullYear();
 
-            return streamWeek === selectedWeek;
-        });
+        if (streams[selectedYear] === undefined) {
+            return [];
+        }
+
+        if (streams[selectedYear][selectedWeek] === undefined) {
+            return [];
+        }
+
+        return streams[selectedYear][selectedWeek];
     }, [streams, value]);
 
     const handleMonthChange = (month) => {
         setCurrentMonth(month);
         setMonthList(getMonthList(month, new Date().getFullYear()));
+    }
+
+    const handleDateChange = (date) => {
+        const dateArray = date.split("/");
+        const newDate = new Date(dateArray[2], dateArray[1] - 1, dateArray[0]);
+        onChange(newDate);
+        const currentMonthList = monthList.map((item) => {
+            return {
+                ...item,
+                isSelected: item.date === date,
+            }
+        });
+        setMonthList(currentMonthList);
     }
 
     return (
@@ -234,6 +275,7 @@ export default function HomePage({ streams, basedMonth, basedMonthList }) {
                             <button
                                 key={day.date}
                                 type="button"
+                                onClick={() => handleDateChange(day.date)}
                                 className={classNames(
                                     'py-1.5 hover:bg-gray-100 focus:z-10',
                                     day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
