@@ -1,28 +1,51 @@
 import { Container } from "@/components/Container";
 import { getStream } from "@twitch/getStream";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { getGameList } from "@mongo/getGameList";
+import {redirect, useRouter} from "next/navigation";
+import { getGameList } from "@mongo/Stream/getGameList";
 import GenericCombobox from "@/components/GenericCombobox";
+import {getSession, withPageAuthRequired} from "@auth0/nextjs-auth0";
+import {isAdministrator} from "@/lib/auth0/administrators";
 
-export async function getServerSideProps(context) {
-    const stream_id = context.query.streamid;
-    const stream = await getStream(stream_id);
-    const gamelist = await getGameList();
+export const getServerSideProps = withPageAuthRequired({
+    async getServerSideProps(context) {
+        const session = await getSession(context.req, context.res);
+        if (!session) {
+            return {
+                redirect: {
+                    destination: '/api/auth/login',
+                    permanent: false,
+                },
+            }
+        }
+        if (!isAdministrator(session.user.email)) {
+            return {
+                redirect: {
+                    destination: '/api/auth/login',
+                    permanent: false,
+                },
+            }
+        }
 
-    // 4h11m44s to number second
-    const duration = stream.duration.split("h").map((e) => e.split("m").map((e) => e.split("s"))).flat().filter((e) => e != "").map((e) => parseInt(e));
-    const duration_sec = duration[0] * 3600 + duration[1] * 60 + duration[2];
 
-    stream.duration = duration_sec;
+        const stream_id = context.query.streamid;
+        const stream = await getStream(stream_id);
+        const gamelist = await getGameList();
 
-    return {
-        props: {
-            stream,
-            gamelist
-        },
+        // 4h11m44s to number second
+        const duration = stream.duration.split("h").map((e) => e.split("m").map((e) => e.split("s"))).flat().filter((e) => e != "").map((e) => parseInt(e));
+        const duration_sec = duration[0] * 3600 + duration[1] * 60 + duration[2];
+
+        stream.duration = duration_sec;
+
+        return {
+            props: {
+                stream,
+                gamelist
+            },
+        }
     }
-}
+})
 
 export default function RegisterPage({ stream = [], gamelist = [] }) {
     const router = useRouter();

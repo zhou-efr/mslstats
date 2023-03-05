@@ -1,6 +1,8 @@
-import { addStream } from "@mongo/addStream";
+import {addStream} from "@mongo/Stream/addStream";
+import {withApiAuthRequired} from "@auth0/nextjs-auth0";
 
-export default async function handler(req, res) {
+
+export default withApiAuthRequired(async function handler(req, res) {
     const stream = req.body;
 
     let status = 201;
@@ -15,4 +17,4 @@ export default async function handler(req, res) {
     console.log(`status: ${status}, response: ${JSON.stringify(response)}`);
 
     res.status(status).end();
-}
+})

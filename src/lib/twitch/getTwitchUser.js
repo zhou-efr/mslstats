@@ -1,6 +1,6 @@
 import { getToken } from '@/lib/twitch/getToken'
 
-export const getUser = async (username) => {
+export const getTwitchUser = async (username) => {
     try {
         const token = await getToken();
         let myHeaders = new Headers();

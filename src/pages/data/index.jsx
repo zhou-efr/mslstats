@@ -1,9 +1,33 @@
 import { getLatestStream } from "@twitch/getLatestStream";
-import { getStreams } from "@mongo/getStreams";
 import Link from "next/link";
+import {withPageAuthRequired} from "@auth0/nextjs-auth0";
+import {getStreams} from "@mongo/Stream/getStreams";
+import {getSession} from "@auth0/nextjs-auth0";
+import {redirect} from "next/navigation";
+import {isAdministrator} from "@/lib/auth0/administrators";
 
-export async function getServerSideProps(context) {
-    const streams = await getLatestStream("798312463", 10);
+export const getServerSideProps = withPageAuthRequired({
+    async getServerSideProps(context) {
+        const session = await getSession(context.req, context.res);
+        if (!session) {
+            return {
+                redirect: {
+                    destination: '/api/auth/login',
+                    permanent: false,
+                },
+            }
+
+        }
+        if (!isAdministrator(session.user.email)) {
+            return {
+                redirect: {
+                    destination: '/api/auth/login',
+                    permanent: false,
+                },
+            }
+        }
+    const streamer_id = "798312463"
+    const streams = await getLatestStream(streamer_id, 10);
     const dbstreams = await getStreams();
 
     let streamsToReturn = [];
@@ -22,7 +46,7 @@ export async function getServerSideProps(context) {
             streams: streamsToReturn,
         },
     }
-}
+}});
 
 export default function DataPages({ streams = [] }) {
     return (

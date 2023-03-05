@@ -1,4 +1,4 @@
-import { getUser } from "@twitch/getUser";
+import { getTwitchUser } from "@twitch/getTwitchUser";
 
 export default async function handler(req, res) {
     const { username } = req.body;
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     let response = {};
 
     try {
-        const user = await getUser(username);
+        const user = await getTwitchUser(username);
         response = { user };
     } catch (error) {
         console.log(error);
