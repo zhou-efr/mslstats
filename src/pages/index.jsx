@@ -3,6 +3,7 @@ import {
     CalendarIcon,
     EllipsisHorizontalIcon,
     MapPinIcon,
+    UserIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     VideoCameraIcon,
@@ -16,6 +17,8 @@ import Link from 'next/link';
 import { getLatestStream } from "@twitch/getLatestStream";
 import { getCurrentStream } from '@twitch/getCurrentStream';
 import { today } from '@internationalized/date';
+import {getSession} from "@auth0/nextjs-auth0";
+import {getUser} from "@mongo/user/getUser";
 
 const meetings = [
     {
@@ -140,16 +143,29 @@ const getMonthList = (month, year) => {
     return basedMonthList;
 }
 
-export async function getServerSideProps(context) {
-    const streamer_id = "798312463"
-    const current_stream = await getCurrentStream(streamer_id)
-    const streams = await getLatestStream(streamer_id, 31, "month");
+export async function getServerSideProps(ctx) {
+    const session = await getSession(ctx.req, ctx.res);
+    let streamer_id = ["798312463"]
+    let streamer_name = ["mathieusommetlive"]
+    if (session?.user) {
+        const dbuser = await getUser(session.user.email);
+        if (dbuser.followed_streams.length){
+            streamer_id = dbuser.followed_streams.map((stream) => stream.streamer_id);
+            streamer_name = dbuser.followed_streams.map((stream) => stream.streamer_name);
+        }
+    }
+    let streams = [];
+    for (let i = 0; i < streamer_id.length; i++) {
+        const temp = await getLatestStream(streamer_id[i], 31, "month");
 
-    console.log(current_stream);
-    if (current_stream) {
-        streams[0].live = true;
-        streams[0].thumbnail_url = current_stream.thumbnail_url;
-        streams[0].url = "https://www.twitch.tv/mathieusommetlive";
+        const current_stream = await getCurrentStream(streamer_id[i])
+        if (current_stream) {
+            temp[0].live = true;
+            temp[0].thumbnail_url = current_stream.thumbnail_url;
+            temp[0].url = "https://www.twitch.tv/".concat(streamer_name[i]);
+        }
+
+        streams = streams.concat(temp);
     }
 
     const today = new Date();
@@ -178,6 +194,14 @@ export async function getServerSideProps(context) {
         streams_by_week[year][week].push(element);
     });
 
+    for (const year in streams_by_week) {
+        for (const week in streams_by_week[year]) {
+            streams_by_week[year][week].sort((a, b) => {
+                return new Date(b.published_at) - new Date(a.published_at);
+            });
+        }
+    }
+
     return {
         props: {
             streams: streams_by_week,
@@ -188,12 +212,12 @@ export async function getServerSideProps(context) {
 }
 
 Date.prototype.getWeek = function () {
-    var date = new Date(this.getTime());
+    let date = new Date(this.getTime());
     date.setHours(0, 0, 0, 0);
     // Thursday in current week decides the year.
     date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
     // January 4 is always in week 1.
-    var week1 = new Date(date.getFullYear(), 0, 4);
+    let week1 = new Date(date.getFullYear(), 0, 4);
     // Adjust to Thursday in week 1 and count number of weeks from date to week1.
     return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
         - 3 + (week1.getDay() + 6) % 7) / 7);
@@ -330,6 +354,15 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                             <time dateTime={meeting.published_at}>
                                                 {(new Date(meeting.published_at)).toLocaleDateString("fr-FR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                             </time>
+                                        </dd>
+                                    </div>
+                                    <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
+                                        <dt className="mt-0.5">
+                                            <span className="sr-only">Date</span>
+                                            <UserIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                        </dt>
+                                        <dd>
+                                            {meeting.user_name}
                                         </dd>
                                     </div>
                                     <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">

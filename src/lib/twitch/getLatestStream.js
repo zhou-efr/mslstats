@@ -8,7 +8,6 @@ export const getLatestStream = async (user_id, first = 3, period = "") => {
         myHeaders.append("Client-Id", process.env["TWITCH_CLIENT_ID"]);
 
         let urlencoded = new URLSearchParams();
-        // urlencoded.append("id", "335921245");
         urlencoded.append("user_id", user_id);
         urlencoded.append("sort", "time");
         urlencoded.append("first", first);
