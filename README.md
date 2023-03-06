@@ -1,5 +1,7 @@
 # MSL Stats
 
+![MSL logo](https://mslstats.azurewebsites.net/images/android/android-launchericon-96-96.png)
+
 MSL Stats est une application en JavaScript basée sur l'architecture Next.js 12 qui utilise l'authentification Auth0 et une base de données MongoDB. La librairie Tailwind UI est utilisée pour la mise en page de l'application.
 
 Bien que ce ne soit pas nécessairement un code extraordinaire, l'application fournit des fonctions préfaites pour l'API Twitch.
