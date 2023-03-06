@@ -3,6 +3,7 @@ import {
     CalendarIcon,
     EllipsisHorizontalIcon,
     MapPinIcon,
+    ClockIcon,
     UserIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -233,8 +234,12 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
 
     const [value, onChange] = useState(new Date());
     const displayedStreams = useMemo(() => {
-        const selectedWeek = value.getWeek();
+        let selectedWeek = value.getWeek();
         const selectedYear = value.getFullYear();
+
+        if (value.getDay() === 0) {
+            selectedWeek = selectedWeek + 1;
+        }
 
         if (streams[selectedYear] === undefined) {
             return [];
@@ -367,6 +372,15 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                         </dt>
                                         <dd>
                                             {meeting.user_name}
+                                        </dd>
+                                    </div>
+                                    <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
+                                        <dt className="mt-0.5">
+                                            <span className="sr-only">Date</span>
+                                            <ClockIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                        </dt>
+                                        <dd>
+                                            {meeting.duration}
                                         </dd>
                                     </div>
                                     <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
