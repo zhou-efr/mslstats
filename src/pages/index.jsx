@@ -20,6 +20,7 @@ import { getCurrentStream } from '@twitch/getCurrentStream';
 import { today } from '@internationalized/date';
 import { getSession } from "@auth0/nextjs-auth0";
 import { getUser } from "@mongo/user/getUser";
+import GenericSelect from '@/components/GenericSelect';
 
 const meetings = [
     {
@@ -172,46 +173,25 @@ export async function getServerSideProps(ctx) {
     const today = new Date();
     const basedMonth = today.getMonth();
     const basedMonthList = getMonthList(basedMonth, today.getFullYear());
-    const streams_by_week = {}
+    const streams_by_day = {}
+    const streamer_names = []
 
-    streams.forEach(element => {
-        const date = new Date(element.published_at);
-        let week = date.getWeek();
-        const year = date.getFullYear();
-
-        if (date.getDay() === 0) {
-            week = week + 1;
+    for (const stream of streams) {
+        const date = new Date(stream.published_at);
+        const day = date.toLocaleDateString("fr-FR");
+        if (!streams_by_day[day]) {
+            streams_by_day[day] = [];
         }
-
-        // console.log(element.published_at)
-        // console.log(date.toLocaleDateString("fr-FR"));
-        // console.log(week);
-        // console.log(year);
-
-        if (streams_by_week[year] === undefined) {
-            streams_by_week[year] = {}
-        }
-
-        if (streams_by_week[year][week] === undefined) {
-            streams_by_week[year][week] = []
-        }
-
-        streams_by_week[year][week].push(element);
-    });
-
-    for (const year in streams_by_week) {
-        for (const week in streams_by_week[year]) {
-            streams_by_week[year][week].sort((a, b) => {
-                return new Date(b.published_at) - new Date(a.published_at);
-            });
-        }
+        streams_by_day[day].push(stream);
+        streamer_names.push(stream.user_login);
     }
 
     return {
         props: {
-            streams: streams_by_week,
+            streams: streams_by_day,
             basedMonth,
-            basedMonthList
+            basedMonthList,
+            streamer_names
         },
     }
 }
@@ -228,29 +208,51 @@ Date.prototype.getWeek = function () {
         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
-export default function HomePage({ streams = [], basedMonth = 0, basedMonthList = [] }) {
+
+export default function HomePage({ streams = [], basedMonth = 0, basedMonthList = [], streamer_names = [] }) {
     const [currentMonth, setCurrentMonth] = useState(basedMonth);
     const [monthList, setMonthList] = useState(basedMonthList);
+    const [view, setView] = useState("week");
+    const [streamers, setStreamers] = useState(streamer_names);
 
     const [value, onChange] = useState(new Date());
     const displayedStreams = useMemo(() => {
         let selectedWeek = value.getWeek();
         const selectedYear = value.getFullYear();
+        const selectedDay = value.toLocaleDateString("fr-FR");
+        let toDisplay = [];
 
         if (value.getDay() === 0) {
             selectedWeek = selectedWeek + 1;
         }
 
-        if (streams[selectedYear] === undefined) {
-            return [];
+        // console.log(streams);
+        // console.log(streams[selectedDay].filter((stream) => streamers.includes(stream.user_login)));
+
+        if (view === "day") {
+            toDisplay = streams[selectedDay].filter((stream) => streamers.includes(stream.user_login))
         }
 
-        if (streams[selectedYear][selectedWeek] === undefined) {
-            return [];
+        if (view === "week") {
+            for (const stream in streams) {
+                const date = new Date(streams[stream][0].published_at);
+                let week = date.getWeek();
+                const year = date.getFullYear();
+
+                if (date.getDay() === 0) {
+                    week = week + 1;
+                }
+
+                if (week === selectedWeek && year === selectedYear) {
+                    toDisplay = toDisplay.concat(streams[stream].filter((stream) => streamers.includes(stream.user_login)));
+                }
+            }
         }
 
-        return streams[selectedYear][selectedWeek];
-    }, [streams, value]);
+        console.log(toDisplay);
+
+        return toDisplay || [];
+    }, [streamers, streams, value, view]);
 
     const handleMonthChange = (month) => {
         setCurrentMonth(month);
@@ -272,7 +274,17 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
 
     return (
         <div className='px-8 flex flex-col items-center lg:items-start'>
-            <h2 className="text-base font-semibold leading-6 text-gray-900">Streams de la semaine</h2>
+            <div className="flex items-center gap-4">
+                <h2 className="text-base font-semibold leading-6 text-gray-900">Streams de la semaine</h2>
+                <GenericSelect
+                    value={view}
+                    onChange={(e) => setView(e.target.value)}
+                    label="Voir par"
+                >
+                    <option value={"week"}>Semaines</option>
+                    <option value={"day"}>Jours</option>
+                </GenericSelect>
+            </div>
             <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
                 <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
                     <div className="flex items-center text-gray-900">
