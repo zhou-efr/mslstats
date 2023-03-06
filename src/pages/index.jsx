@@ -17,8 +17,8 @@ import Link from 'next/link';
 import { getLatestStream } from "@twitch/getLatestStream";
 import { getCurrentStream } from '@twitch/getCurrentStream';
 import { today } from '@internationalized/date';
-import {getSession} from "@auth0/nextjs-auth0";
-import {getUser} from "@mongo/user/getUser";
+import { getSession } from "@auth0/nextjs-auth0";
+import { getUser } from "@mongo/user/getUser";
 
 const meetings = [
     {
@@ -149,7 +149,7 @@ export async function getServerSideProps(ctx) {
     let streamer_name = ["mathieusommetlive"]
     if (session?.user) {
         const dbuser = await getUser(session.user.email);
-        if (dbuser.followed_streams.length){
+        if (dbuser.followed_streams.length) {
             streamer_id = dbuser.followed_streams.map((stream) => stream.streamer_id);
             streamer_name = dbuser.followed_streams.map((stream) => stream.streamer_name);
         }
@@ -175,8 +175,12 @@ export async function getServerSideProps(ctx) {
 
     streams.forEach(element => {
         const date = new Date(element.published_at);
-        const week = date.getWeek();
+        let week = date.getWeek();
         const year = date.getFullYear();
+
+        if (date.getDay() === 0) {
+            week = week + 1;
+        }
 
         // console.log(element.published_at)
         // console.log(date.toLocaleDateString("fr-FR"));
@@ -286,12 +290,12 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                         </button>
                     </div>
                     <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+                        <div>S</div>
                         <div>M</div>
                         <div>T</div>
                         <div>W</div>
                         <div>T</div>
                         <div>F</div>
-                        <div>S</div>
                         <div>S</div>
                     </div>
                     <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
