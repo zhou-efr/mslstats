@@ -73,8 +73,8 @@ export default function AboutPage() {
 
                             <div className="max-w-xl">
                                 <p className="mt-6">
-                                    Ce site a été créé car j{"'"}apprécie beaucoup les lives de Mathieu Sommet et je voulais créer quelque chose de
-                                    drôle autour de ses diffusions en direct. Le but de ce site n{"'"}est pas de fournir des statistiques toxiques
+                                    Ce site a été créé car j{"'"}apprécie beaucoup les lives de MSL et je voulais créer quelque chose de
+                                    fun autour de ses lives. Le but de ce site n{"'"}est pas de fournir des statistiques toxiques
                                     ou de nuire à l{"'"}expérience de streaming de Mathieu Sommet, mais plutôt de créer une interface coolos et
                                     pratique.
                                 </p>
@@ -85,9 +85,12 @@ export default function AboutPage() {
                                     je supprimerai le site à l{"'"}instant où la modération / le streamer me le demandera.
                                 </p>
                                 <p className="mt-8">
-                                    Enfin, je suis un grand fan des rediffusions de Mathieu Sommet et ce site me permet d{"'"}avoir une interface
+                                    Enfin, je regarde principalement les rediffusions de lives et ce site me permet d{"'"}avoir une interface
                                     plus ergonomique que celle de Twitch. J{"'"}espère que ce site vous plaira et qu{"'"}il vous permettra de découvrir
-                                    des fun facts sur les streams de Mathieu Sommet.
+                                    des fun facts sur les streams de MSL.
+                                </p>
+                                <p className="mt-8">
+                                    - Chat-gpt (Zhou aussi en vrai)
                                 </p>
                             </div>
                         </div>
