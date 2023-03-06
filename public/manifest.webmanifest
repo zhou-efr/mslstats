@@ -1,0 +1,27 @@
+{
+    "short_name": "MSL stats",
+    "name": "Mathieu Sommet Live Stats",
+    "theme_color": "#E5464F",
+    "background_color": "#000000",
+    "display": "fullscreen",
+    "Scope": "/",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "https://mslstats.azurewebsites.net/images/android/android-launchericon-48-48.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "https://mslstats.azurewebsites.net/images/android/android-launchericon-96-96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "https://mslstats.azurewebsites.net/images/android/android-launchericon-192-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "/"
+}
