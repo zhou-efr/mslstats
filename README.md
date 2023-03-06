@@ -1,34 +1,22 @@
-# Transmit
+# MSL Stats
 
-Transmit is a [Tailwind UI](https://tailwindui.com) site template built using [Tailwind CSS](https://tailwindcss.com) and [Next.js](https://nextjs.org).
+MSL Stats est une application en JavaScript basée sur l'architecture Next.js 12 qui utilise l'authentification Auth0 et une base de données MongoDB. La librairie Tailwind UI est utilisée pour la mise en page de l'application.
 
-## Getting started
+Bien que ce ne soit pas nécessairement un code extraordinaire, l'application fournit des fonctions préfaites pour l'API Twitch.
 
-To get started with this template, first install the npm dependencies:
+## Fonctionnalités
+L'application MSL Stats est conçue pour gérer et afficher des statistiques sur les diffusions en direct de Mathieu Sommet( voir [about](https://mslstats.azurewebsites.net/about)), mais elle permet également aux utilisateurs de voir les rediffusions par jour ou semaine des streamers de votre choix (après login).
 
-```bash
-npm install
-```
+## Prérequis
 
-Next, run the development server:
+Pour tester l'application en local, vous aurez besoin d'une application Twitch pour les développeurs, d'une base de données MongoDB et d'un compte de développeur Auth0.
+## Configuration
 
-```bash
-npm run dev
-```
+Vous devez remplir les secrets nécessaires dans le fichier .env en suivant l'exemple donné dans le fichier .env.template.
+## Installation et utilisation
 
-Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
+Après avoir rempli les secrets, exécutez npm i pour installer les dépendances, puis npm run dev pour lancer l'application.
 
-## Customizing
-
-You can start editing this template by modifying the files in the `/src` folder. The site will auto-update as you edit these files.
-
-## License
+## Licence
 
 This site template is a commercial product and is licensed under the [Tailwind UI license](https://tailwindui.com/license).
-
-## Learn more
-
-To learn more about the technologies used in this site template, see the following resources:
-
-- [Tailwind CSS](https://tailwindcss.com/docs) - the official Tailwind CSS documentation
-- [Next.js](https://nextjs.org/docs) - the official Next.js documentation
