@@ -14,11 +14,15 @@ L'application MSL Stats est conçue pour gérer et afficher des statistiques sur
 Pour tester l'application en local, vous aurez besoin d'une application Twitch pour les développeurs, d'une base de données MongoDB et d'un compte de développeur Auth0.
 ## Configuration
 
-Vous devez remplir les secrets nécessaires dans le fichier .env en suivant l'exemple donné dans le fichier .env.template.
+Vous devez remplir les secrets nécessaires dans le fichier `.env` en suivant l'exemple donné dans le fichier `.env.template`.
 ## Installation et utilisation
 
-Après avoir rempli les secrets, exécutez npm i pour installer les dépendances, puis npm run dev pour lancer l'application.
+Après avoir rempli les secrets, exécutez `npm i` pour installer les dépendances, puis `npm run dev` pour lancer l'application.
 
 ## Licence
 
 This site template is a commercial product and is licensed under the [Tailwind UI license](https://tailwindui.com/license).
+
+## Contact
+
+Open an issue on the [GitHub repository](https://github.com/zhou-efr/mslstats/issues) if you have any questions or suggestions.
