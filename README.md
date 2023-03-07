@@ -1,13 +1,13 @@
-# MSL Stats
+# [MSL Stats](https://mslstats.azurewebsites.net/)
 
-![MSL logo](https://mslstats.azurewebsites.net/images/android/android-launchericon-96-96.png)
+![MSL logo](https://mslstats.azurewebsites.net/images/android/android-launchericon-96-96.png)(https://mslstats.azurewebsites.net/)
 
 MSL Stats est une application en JavaScript basée sur l'architecture Next.js 12 qui utilise l'authentification Auth0 et une base de données MongoDB. La librairie Tailwind UI est utilisée pour la mise en page de l'application.
 
 Bien que ce ne soit pas nécessairement un code extraordinaire, l'application fournit des fonctions préfaites pour l'API Twitch.
 
 ## Fonctionnalités
-L'application MSL Stats est conçue pour gérer et afficher des statistiques sur les diffusions en direct de Mathieu Sommet( voir [about](https://mslstats.azurewebsites.net/about)), mais elle permet également aux utilisateurs de voir les rediffusions par jour ou semaine des streamers de votre choix (après login).
+L'application MSL Stats est conçue pour gérer et afficher des statistiques sur les diffusions en direct de Mathieu Sommet (voir [about](https://mslstats.azurewebsites.net/about)), mais elle permet également aux utilisateurs de voir les rediffusions par jour ou semaine des streamers de votre choix (après login).
 
 ## Prérequis
 
