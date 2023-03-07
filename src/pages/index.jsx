@@ -230,7 +230,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
         // console.log(streams[selectedDay].filter((stream) => streamers.includes(stream.user_login)));
 
         if (view === "day") {
-            toDisplay = streams[selectedDay].filter((stream) => streamers.includes(stream.user_login))
+            toDisplay = streams[selectedDay]?.filter((stream) => streamers.includes(stream.user_login)) || [];
         }
 
         if (view === "week") {
@@ -244,7 +244,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                 }
 
                 if (week === selectedWeek && year === selectedYear) {
-                    toDisplay = toDisplay.concat(streams[stream].filter((stream) => streamers.includes(stream.user_login)));
+                    toDisplay = toDisplay.concat(streams[stream]?.filter((stream) => streamers.includes(stream.user_login)) || []);
                 }
             }
         }
