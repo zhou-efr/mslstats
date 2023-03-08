@@ -1,8 +1,8 @@
 import 'react-calendar/dist/Calendar.css';
 import { getLatestStream } from "@twitch/getLatestStream";
 import { getCurrentStream } from '@twitch/getCurrentStream';
-import { getSession } from "@auth0/nextjs-auth0";
 import { getUser } from "@mongo/user/getUser";
+import HomePage from '@/components/pages/home';
 
 function getDateOfWeek(w, y) {
     var d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
@@ -61,10 +61,21 @@ Date.prototype.getWeek = function () {
         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
-export async function getServerSideProps(ctx) {
-    const session = await getSession(ctx.req, ctx.res);
+const getSessionUser = async () => {
+    const res = await fetch(`${process.env.AUTH0_BASE_URL}/api/auth/me`, {
+        headers: {
+            cookie: `appSession=${cookies().get('appSession')?.value}`
+            // cookie: cookies().getAll().map(c => `${c.name}=${c.value}`).join(';') -- all cookies
+        }
+    })
+    return await res.json()
+}
+
+export default async function HomeServerPage(ctx) {
+    const session = await getSessionUser();
     let streamer_id = ["798312463"]
     let streamer_name = ["mathieusommetlive"]
+    console.log(session);
     if (session?.user) {
         const dbuser = await getUser(session.user.email);
         if (dbuser.followed_streams.length) {
@@ -102,12 +113,7 @@ export async function getServerSideProps(ctx) {
         streamer_names.push(stream.user_login);
     }
 
-    return {
-        props: {
-            streams: streams_by_day,
-            basedMonth,
-            basedMonthList,
-            streamer_names
-        },
-    }
+    return (
+        <HomePage streams={streams_by_day} basedMonthList={basedMonthList} streamer_names={streamer_names} />
+    )
 }
