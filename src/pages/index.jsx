@@ -396,7 +396,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                         </dd>
                                     </div>
                                     <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
-                                        <Link href={"twitch://stream/" + user_name} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-indigo-600 hover:text-indigo-900"} cursor-pointer`} target={"_blank"}>
+                                        <Link href={"twitch://stream/" + meeting.user_name} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-indigo-600 hover:text-indigo-900"} cursor-pointer`} target={"_blank"}>
                                             <dt className="mt-0.5">
                                                 <span className="sr-only">Location</span>
                                                 <VideoCameraIcon className={`h-5 w-5 ${meeting.live ? "text-red-500" : "text-gray-400"}`} aria-hidden="true" />
