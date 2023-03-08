@@ -1,40 +1,21 @@
-import { Fragment, useMemo } from 'react'
+import { useMemo } from 'react'
 import {
     CalendarIcon,
-    EllipsisHorizontalIcon,
-    MapPinIcon,
     ClockIcon,
     UserIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     VideoCameraIcon,
 } from '@heroicons/react/20/solid'
-import { Menu, Transition } from '@headlessui/react'
 import React, { useState } from 'react';
-import Calendar from 'react-calendar';
 import Image from 'next/image';
 import 'react-calendar/dist/Calendar.css';
 import Link from 'next/link';
 import { getLatestStream } from "@twitch/getLatestStream";
 import { getCurrentStream } from '@twitch/getCurrentStream';
-import { today } from '@internationalized/date';
 import { getSession } from "@auth0/nextjs-auth0";
 import { getUser } from "@mongo/user/getUser";
 import GenericSelect from '@/components/GenericSelect';
-
-const meetings = [
-    {
-        id: 1,
-        date: 'January 10th, 2022',
-        time: '5:00 PM',
-        datetime: '2022-01-10T17:00',
-        name: 'Leslie Alexander',
-        imageUrl:
-            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        location: 'Starbucks',
-    },
-    // More meetings...
-]
 
 const days = [
     { date: '2021-12-27' },
@@ -145,6 +126,18 @@ const getMonthList = (month, year) => {
     return basedMonthList;
 }
 
+Date.prototype.getWeek = function () {
+    let date = new Date(this.getTime());
+    date.setHours(0, 0, 0, 0);
+    // Thursday in current week decides the year.
+    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+    // January 4 is always in week 1.
+    let week1 = new Date(date.getFullYear(), 0, 4);
+    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
+        - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx.req, ctx.res);
     let streamer_id = ["798312463"]
@@ -195,19 +188,6 @@ export async function getServerSideProps(ctx) {
         },
     }
 }
-
-Date.prototype.getWeek = function () {
-    let date = new Date(this.getTime());
-    date.setHours(0, 0, 0, 0);
-    // Thursday in current week decides the year.
-    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-    // January 4 is always in week 1.
-    let week1 = new Date(date.getFullYear(), 0, 4);
-    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
-        - 3 + (week1.getDay() + 6) % 7) / 7);
-}
-
 
 export default function HomePage({ streams = [], basedMonth = 0, basedMonthList = [], streamer_names = [] }) {
     const [currentMonth, setCurrentMonth] = useState(basedMonth);
