@@ -12,17 +12,31 @@ const secondsToHm = (d) => {
     return hDisplay + mDisplay
 }
 
-export default function StatsWithBackground({streams, games}) {
-    const pureGameplay = useMemo(() => secondsToHm(games?.reduce((acc, game) => game.totalDuration + acc, 0) || 0), [games]);
+export default function StatsWithBackground({streams, games, month}) {
+    const pureGameplay = useMemo(() => {
+        const streamsInMonth = streams?.filter(stream => new Date(stream.started_at).getMonth() === month) || []
+        const totalGameplay = streamsInMonth?.reduce((acc, stream) => (stream.game_end - stream.game_start) + acc, 0) || 0
+        return secondsToHm(totalGameplay)
+    }, [games]);
     const finishedGame = useMemo(() => games?.reduce((acc, game) => game.finished ? acc + 1 : acc, 0) || 0, [games]);
-    const chattingdurationaverage = useMemo(() => secondsToHm(streams?.reduce((acc, stream) => stream.game_start + acc, 0) / streams?.length || 0), [streams]);
-    const longestStream = useMemo(() => secondsToHm(streams?.reduce((acc, stream) => stream.duration > acc ? stream.duration : acc, 0) || 0), [streams]);
+    const chattingdurationaverage = useMemo(() => {
+        const streamsInMonth = streams?.filter(stream => new Date(stream.started_at).getMonth() === month) || []
+        const totalChatting = streamsInMonth?.reduce((acc, stream) => stream.game_start + acc, 0) || 0
+        return secondsToHm(totalChatting / streamsInMonth.length)
+    }, [streams]);
+    const longestStream = useMemo(() => {
+        const streamsInMonth = streams?.filter(stream => new Date(stream.started_at).getMonth() === month) || []
+        const longestStream = streamsInMonth?.reduce((acc, stream) => {
+            return stream.duration > acc ? stream.duration : acc
+        }, 0) || 0
+        return secondsToHm(longestStream)
+    }, [streams]);
 
     const stats = [
-        { id: 1, name: 'De pure gaming', value: pureGameplay },
-        { id: 2, name: 'Jeux complétés en 2023', value: finishedGame },
-        { id: 3, name: 'En moyenne de discutions passionnantes', value: chattingdurationaverage },
-        { id: 4, name: 'Record de durée', value: longestStream },
+        {id: 1, name: 'De pure gaming', value: pureGameplay},
+        {id: 2, name: 'Jeux complétés en 2023', value: finishedGame},
+        {id: 3, name: 'En moyenne de discutions passionnantes', value: chattingdurationaverage},
+        {id: 4, name: 'Record de durée', value: longestStream},
     ]
 
     return (
