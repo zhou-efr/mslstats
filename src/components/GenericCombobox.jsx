@@ -50,7 +50,7 @@ export default function GenericCombobox({ genericarray, query, setQuery }) {
                 <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     {query.length > 0 && (
                         <Combobox.Option
-                            value={{ id: null, name: query }}
+                            value={query}
                             className={({ active }) =>
                                 classNames(
                                     'relative cursor-default select-none py-2 pl-3 pr-9',
