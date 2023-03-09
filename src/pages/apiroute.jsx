@@ -7,6 +7,37 @@ import {useUser, withPageAuthRequired} from "@auth0/nextjs-auth0/client";
 import {getSession} from "@auth0/nextjs-auth0";
 import {isAdministrator} from "@/lib/auth0/administrators";
 
+const GameUpdateRoute = () => {
+    const [update, setUpdate] = useState(false);
+
+    const handleGetToken = async () => {
+        const response = await fetch('/api/db/games', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (response.status === 201) {
+            setUpdate(true);
+        }
+    }
+
+    return (
+        <>
+            <GenericButton onClick={handleGetToken} variant="primary" size="medium">Update games</GenericButton>
+            <span className="text-sm font-medium text-slate-900">
+                {
+                    update ? (
+                        <div>games updated at {(new Date()).toLocaleTimeString()}</div>
+                    ) : (
+                        <div>no update yet</div>
+                    )
+                }
+            </span>
+        </>
+    )
+}
+
 const TokenRoute = () => {
     const [token, setToken] = useState();
 
@@ -36,7 +67,6 @@ const TokenRoute = () => {
         </>
     )
 }
-
 const UserRoute = () => {
     const [username, setUsername] = useState('mathieusommetlive');
     const [user, setUser] = useState();
@@ -167,6 +197,7 @@ export default withPageAuthRequired(function Home() {
                 />
             </Head>
             <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5">
+                <GameUpdateRoute />
                 <TokenRoute />
                 <UserRoute />
                 <StreamRoute />
