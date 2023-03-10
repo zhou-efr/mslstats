@@ -54,8 +54,8 @@ export default function AboutPage() {
                                 <Image src="https://tailwindui.com/img/logos/workcation-logo-white.svg" alt="" height={48} width={48} className="h-12 w-auto" />
                                 <blockquote className="mt-6 text-xl font-semibold leading-8 text-white">
                                     <p>
-                                        “Amet amet eget scelerisque tellus sit neque faucibus non eleifend. Integer eu praesent at a. Ornare
-                                        arcu gravida natoque erat et cursus tortor.”
+                                        “Maître Filou spécialisé Coolos. Has Been de Youtube. Active le mode difficile
+                                        ou je m{"'"}ennuie. ”
                                     </p>
                                 </blockquote>
                                 <figcaption className="mt-6 text-sm leading-6 text-gray-300">
