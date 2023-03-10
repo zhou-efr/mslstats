@@ -35,11 +35,11 @@ export default function StatsPage({streams, games, month}) {
     <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5">
       <StatsWithBackground {...{streams, games, month}}/>
         <div className="w-full flex flex-wrap justify-around my-10">
-            <div className={"flex flex-col items-center w-1/2 h-[30rem]"}>
+            <div className={"flex flex-col items-center w-full lg:w-1/2 h-[30rem]"}>
                 <h3 className="text-base font-semibold leading-6 text-gray-900">Fréquence des jeux</h3>
                 <GameFrequencyChartDonnut {...{streams, games, month}}/>
             </div>
-            <div className={"flex flex-col items-center w-1/2 h-[30rem]"}>
+            <div className={"flex flex-col items-center w-full lg:w-1/2 h-96 lg:h-[30rem]"}>
                 <h3 className="text-base font-semibold leading-6 text-gray-900">Temps de jeu</h3>
                 <GameTimeChartRadar {...{streams, games, month}}/>
             </div>
