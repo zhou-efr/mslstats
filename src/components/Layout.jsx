@@ -1,9 +1,9 @@
-import { Fragment, useId, useState } from 'react'
+import {Fragment, useState} from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
-import { Container } from './Container'
+import {Container} from './Container'
 
 import mslicon from '@/images/msl.jpg'
 import Tabs from './Tabs'
@@ -77,15 +77,14 @@ function AboutSection(props) {
         <span className="ml-2.5">About</span>
       </h2>
       <p
-        className={clsx(
-          'mt-2 text-base leading-7 text-slate-700',
-          !isExpanded && 'lg:line-clamp-4'
-        )}
+          className={clsx(
+              'mt-2 text-base leading-7 text-slate-700',
+              !isExpanded && 'lg:line-clamp-4'
+          )}
       >
-        Ce site a été créé car j{"'"}apprécie beaucoup les lives de Mathieu Sommet et je voulais créer quelque chose de
-        drôle autour de ses diffusions en direct. Le but de ce site n{"'"}est pas de fournir des statistiques toxiques
-        ou de nuire à l{"'"}expérience de streaming de Mathieu Sommet, mais plutôt de créer une interface coolos et
-        pratique.
+        Ce site a été créé car j{"'"}apprécie beaucoup les lives de MSL et je voulais créer quelque chose de
+        fun autour de ses lives. Je regarde principalement les rediffusions de lives et ce site me permet d{"'"}avoir
+        une interface plus ergonomique que celle de Twitch.
       </p>
       {!isExpanded && (
         <button
@@ -138,10 +137,10 @@ export function Layout({ children }) {
           </Link>
           <div className="mt-10 text-center lg:mt-12 lg:text-left">
             <p className="text-xl font-bold text-slate-900">
-              <Link href="/">Mathieu Sommet Live</Link>
+              <Link href="/">MSL Stats</Link>
             </p>
             <p className="mt-3 text-lg font-medium leading-8 text-slate-700">
-              Maître Filou spécialisé Coolos. Active le mode difficile ou s{"'"}ennuie.
+              Stats, Redif, Playlists et on verra bien ce que je rajouterai.
             </p>
           </div>
           <AboutSection className="mt-12 hidden lg:block" />
