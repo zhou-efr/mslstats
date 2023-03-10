@@ -17,16 +17,17 @@ export const GameTimeChartRadar = ({streams, games, month}) => {
         // check if game is in current month streams
         for (let i = 0; i < streams.length; i++) {
             const stream = streams[i];
-            if (month === new Date().getMonth() && stream.game_played === game.title) {
+            const streamMonth = new Date(stream.started_at).getMonth();
+            if (month === streamMonth && stream.game_played === game.title) {
                 return game.title;
             }
         }
     }) || [], [games]).filter(game => game !== undefined);
     const datasets = useMemo(() => {
-        const currentMonth = new Date().getMonth();
         let data = labels?.map(game => 0)
         streams?.forEach(stream => {
-            if (month === currentMonth) {
+            const streamMonth = new Date(stream.started_at).getMonth();
+            if (month === streamMonth) {
                 const gameIndex = labels.findIndex(game => game === stream.game_played);
                 data[gameIndex] += stream.game_end - stream.game_start;
             }
