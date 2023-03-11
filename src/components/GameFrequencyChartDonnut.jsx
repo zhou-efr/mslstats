@@ -1,40 +1,17 @@
 import React, {useMemo} from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import {ArcElement, Chart as ChartJS, Legend, Tooltip} from 'chart.js';
+import {Doughnut} from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function GameFrequencyChartDonnut({ streams, games, month }) {
-    const labels = useMemo(() => games?.map(game => {
-        // check if game is in current month streams
-        for (let i = 0; i < streams.length; i++) {
-            const stream = streams[i];
-            const streamMonth = new Date(stream.started_at).getMonth();
-            if (streamMonth === new Date().getMonth() && stream.game_played === game.title) {
-                return game.title;
-            }
-        }
-    }) || [], [games, streams]).filter(game => game !== undefined);
-    const datasets = useMemo(() => {
-        const currentMonth = new Date().getMonth();
-        let data = labels?.map(game => 0)
-        streams?.forEach(stream => {
-            const streamMonth = new Date(stream.started_at).getMonth();
-            if (streamMonth === currentMonth) {
-                const gameIndex = labels.findIndex(game => game === stream.game_played);
-                data[gameIndex] += 1;
-            }
-        })
-
-        return data;
-    }, [streams, games])
+export function GameFrequencyChartDonnut({gameFrequency, gameFrequencyLabels}) {
 
     const data = useMemo(() => ({
-        labels,
+        labels: gameFrequencyLabels,
         datasets: [
             {
                 label: 'Game Frequency',
-                data: datasets,
+                data: gameFrequency,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -54,7 +31,7 @@ export function GameFrequencyChartDonnut({ streams, games, month }) {
                 borderWidth: 1,
             },
         ],
-    }), [labels, datasets]);
+    }), [gameFrequencyLabels, gameFrequency]);
 
     return <Doughnut data={data} />;
 }

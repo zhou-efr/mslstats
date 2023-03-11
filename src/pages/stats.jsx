@@ -1,16 +1,15 @@
-import StatsWithBackground from "@/components/StatsWithBackground";
 import {getStreams} from "@mongo/Stream/getStreams";
 import {getGames} from "@mongo/Game/getGames";
-import {GameTimeChartRadar} from "@/components/GameTimeChartRadar";
-import AverageTime from "@/components/AverageTime";
-import {GameFrequencyChartDonnut} from "@/components/GameFrequencyChartDonnut";
+import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/20/solid";
+import {MonthlyStatPage} from "@/components/MonthlyStatPage";
+import {useMemo, useState} from "react";
 
 export async function getServerSideProps(ctx) {
-  const rawstreams = await getStreams();
-  const rawgames = await getGames();
+    const rawstreams = await getStreams();
+    const rawgames = await getGames();
     const streams = rawstreams.map(stream => {
-        const { _doc } = stream;
-        return { ..._doc, _id: _doc._id.toString(), started_at: _doc.started_at.getTime() };
+        const {_doc} = stream;
+        return {..._doc, _id: _doc._id.toString(), started_at: _doc.started_at.getTime()};
     });
 
     const games = rawgames.map(game => {
@@ -21,30 +20,43 @@ export async function getServerSideProps(ctx) {
     const month = new Date().getMonth();
 
     return {
-    props: {
-        streams,
-        games,
-        month
-    },
-  };
+        props: {
+            basestreams: streams,
+            basegames: games,
+            basemonth: month
+        },
+    };
 }
 
-export default function StatsPage({streams, games, month}) {
+const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+export default function StatsPage({basestreams, basegames, basemonth}) {
+    const [month, setMonth] = useState(basemonth);
 
-  return (
-    <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5">
-      <StatsWithBackground {...{streams, games, month}}/>
-        <div className="w-full flex flex-wrap justify-around my-10">
-            <div className={"flex flex-col items-center w-full lg:w-1/2 h-[30rem]"}>
-                <h3 className="text-base font-semibold leading-6 text-gray-900">Fréquence des jeux</h3>
-                <GameFrequencyChartDonnut {...{streams, games, month}}/>
+    const streams = useMemo(() => basestreams.filter(stream => new Date(stream.started_at).getMonth() === month), [basestreams, month]);
+    const games = useMemo(() => basegames.filter(game => new Date(game.started_at).getMonth() === month), [basegames, month]);
+
+    return (
+        <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5 items-center w-full">
+            <div className="flex items-center text-gray-900 w-48">
+                <button
+                    type="button"
+                    onClick={() => setMonth((month - 1) % 12)}
+                    className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                >
+                    <span className="sr-only">Previous month</span>
+                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true"/>
+                </button>
+                <div className="flex-auto text-center text-sm font-semibold">{months[month]}</div>
+                <button
+                    type="button"
+                    onClick={() => setMonth((month + 1) % 12)}
+                    className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                >
+                    <span className="sr-only">Next month</span>
+                    <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
+                </button>
             </div>
-            <div className={"flex flex-col items-center w-full lg:w-1/2 h-96 lg:h-[30rem]"}>
-                <h3 className="text-base font-semibold leading-6 text-gray-900">Temps de jeu</h3>
-                <GameTimeChartRadar {...{streams, games, month}}/>
-            </div>
+            <MonthlyStatPage streams={streams} games={games}/>
         </div>
-        <AverageTime {...{streams, games, month}}/>
-    </div>
-  )
+    )
 }
