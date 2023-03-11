@@ -1,11 +1,12 @@
-import { Container } from "@/components/Container";
-import { getStream } from "@twitch/getStream";
-import { useState } from "react";
-import {redirect, useRouter} from "next/navigation";
-import { getGameList } from "@mongo/Stream/getGameList";
+import {Container} from "@/components/Container";
+import {getStream} from "@twitch/getStream";
+import {useState} from "react";
+import {useRouter} from "next/navigation";
+import {getGameList} from "@mongo/Stream/getGameList";
 import GenericCombobox from "@/components/GenericCombobox";
 import {getSession, withPageAuthRequired} from "@auth0/nextjs-auth0";
 import {isAdministrator} from "@/lib/auth0/administrators";
+import TimeCalculator from "@/components/TimeCalculator";
 
 export const getServerSideProps = withPageAuthRequired({
     async getServerSideProps(context) {
@@ -101,12 +102,14 @@ export default function RegisterPage({ stream = [], gamelist = [] }) {
 
     return (
         <Container>
+            <TimeCalculator/>
             <form className="space-y-6" onSubmit={handleSubmit} method="POST">
                 <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                         <div className="md:col-span-1">
                             <h3 className="text-base font-semibold leading-6 text-gray-900">Stream info</h3>
-                            <p className="mt-1 text-sm text-gray-500">Enregistrement de <span className="italic">{stream.title}</span>.</p>
+                            <p className="mt-1 text-sm text-gray-500">Enregistrement de <span
+                                className="italic">{stream.title}</span>.</p>
                         </div>
                         <div className="mt-5 md:col-span-2 md:mt-0">
                             <div className="grid grid-cols-6 gap-6">
@@ -213,6 +216,7 @@ export default function RegisterPage({ stream = [], gamelist = [] }) {
                                                         {key} (s)
                                                     </label>
                                                     <input
+                                                        required={true}
                                                         type={"number"}
                                                         name={key}
                                                         id={key}
