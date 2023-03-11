@@ -1,9 +1,7 @@
-import { getLatestStream } from "@twitch/getLatestStream";
+import {getLatestStream} from "@twitch/getLatestStream";
 import Link from "next/link";
-import {withPageAuthRequired} from "@auth0/nextjs-auth0";
+import {getSession, withPageAuthRequired} from "@auth0/nextjs-auth0";
 import {getStreams} from "@mongo/Stream/getStreams";
-import {getSession} from "@auth0/nextjs-auth0";
-import {redirect} from "next/navigation";
 import {isAdministrator} from "@/lib/auth0/administrators";
 
 export const getServerSideProps = withPageAuthRequired({
@@ -27,8 +25,8 @@ export const getServerSideProps = withPageAuthRequired({
             }
         }
     const streamer_id = "798312463"
-    const streams = await getLatestStream(streamer_id, 10);
-    const dbstreams = await getStreams();
+        const streams = await getLatestStream(streamer_id, 100);
+        const dbstreams = await getStreams();
 
     let streamsToReturn = [];
 

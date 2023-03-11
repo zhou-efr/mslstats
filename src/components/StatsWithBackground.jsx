@@ -1,43 +1,7 @@
-import {useMemo} from "react";
 import Image from "next/image";
 
 
-const secondsToHm = (d) => {
-    d = Number(d)
-    const h = Math.floor(d / 3600)
-    const m = Math.floor(d % 3600 / 60)
-
-    const hDisplay = h > 0 ? h + (h === 1 ? 'h ' : 'h ') : ''
-    const mDisplay = m > 0 ? m + (m === 1 ? 'm' : 'm') : ''
-    return hDisplay + mDisplay
-}
-
-export default function StatsWithBackground({streams, games, month}) {
-    const pureGameplay = useMemo(() => {
-        const streamsInMonth = streams?.filter(stream => new Date(stream.started_at).getMonth() === month) || []
-        const totalGameplay = streamsInMonth?.reduce((acc, stream) => (stream.game_end - stream.game_start) + acc, 0) || 0
-        return secondsToHm(totalGameplay)
-    }, [games]);
-    const finishedGame = useMemo(() => games?.reduce((acc, game) => game.finished ? acc + 1 : acc, 0) || 0, [games]);
-    const chattingdurationaverage = useMemo(() => {
-        const streamsInMonth = streams?.filter(stream => new Date(stream.started_at).getMonth() === month) || []
-        const totalChatting = streamsInMonth?.reduce((acc, stream) => stream.game_start + acc, 0) || 0
-        return secondsToHm(totalChatting / streamsInMonth.length)
-    }, [streams]);
-    const longestStream = useMemo(() => {
-        const streamsInMonth = streams?.filter(stream => new Date(stream.started_at).getMonth() === month) || []
-        const longestStream = streamsInMonth?.reduce((acc, stream) => {
-            return stream.duration > acc ? stream.duration : acc
-        }, 0) || 0
-        return secondsToHm(longestStream)
-    }, [streams]);
-
-    const stats = [
-        {id: 1, name: 'De pure gaming', value: pureGameplay},
-        {id: 2, name: 'Jeux complétés en 2023', value: finishedGame},
-        {id: 3, name: 'En moyenne de discutions passionnantes', value: chattingdurationaverage},
-        {id: 4, name: 'Record de durée', value: longestStream},
-    ]
+export default function StatsWithBackground({highlights}) {
 
     return (
         <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 rounded-lg">
@@ -83,7 +47,7 @@ export default function StatsWithBackground({streams, games, month}) {
                     </p>
                 </div>
                 <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 text-white sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-                    {stats.map((stat) => (
+                    {highlights.map((stat) => (
                         <div key={stat.id} className="flex flex-col gap-y-3 border-l border-white/10 pl-6">
                             <dt className="text-sm leading-6">{stat.name}</dt>
                             <dd className="order-first text-3xl font-semibold tracking-tight">{stat.value}</dd>
