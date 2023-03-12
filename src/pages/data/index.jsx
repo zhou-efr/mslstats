@@ -96,7 +96,7 @@ export default function DataPages({ streams = [] }) {
                                         {
                                             !stream.registered &&
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                                <a href={stream.url} className="text-indigo-600 hover:text-indigo-900">
+                                                <a href={`/data/register?streamid=${stream.id}`} className="text-indigo-600 hover:text-indigo-900">
                                                     Edit
                                                 </a>
                                             </td>
