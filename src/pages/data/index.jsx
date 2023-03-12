@@ -89,14 +89,14 @@ export default function DataPages({ streams = [] }) {
                                         <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{stream.user_name}</td>
                                         <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{(new Date(stream.published_at)).toLocaleDateString("fr")}</td>
                                         <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                                            <Link href={stream.url} className="text-indigo-600 hover:text-indigo-900 cursor-pointer" target={"_blank"}>
+                                            <Link href={stream.url} className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
                                                 lien
                                             </Link>
                                         </td>
                                         {
                                             !stream.registered &&
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                                <a href={`/data/register?streamid=${stream.id}`} className="text-indigo-600 hover:text-indigo-900">
+                                                <a href={stream.url} className="text-indigo-600 hover:text-indigo-900">
                                                     Edit
                                                 </a>
                                             </td>
