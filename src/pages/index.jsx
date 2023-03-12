@@ -361,7 +361,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                             <Image width={56} height={56} src={meeting.thumbnail_url.replace("%{width}", "56").replace("%{height}", "56").replace("{width}", "56").replace("{height}", "56")} alt="" className="h-14 w-14 flex-none rounded-md" />
                             <div className="flex-auto">
                                 <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">
-                                    <Link href={meeting.url} className="hover:text-indigo-900 cursor-pointer" target={"_blank"}>
+                                    <Link href={meeting.url} className="hover:text-indigo-900 cursor-pointer">
                                         {meeting.title}
                                     </Link>
                                 </h3>
@@ -396,7 +396,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                         </dd>
                                     </div>
                                     <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
-                                        <Link href={"twitch://stream/" + meeting.user_name} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-indigo-600 hover:text-indigo-900"} cursor-pointer`} target={"_blank"}>
+                                        <Link href={meeting.url} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-indigo-600 hover:text-indigo-900"} cursor-pointer`}>
                                             <dt className="mt-0.5">
                                                 <span className="sr-only">Location</span>
                                                 <VideoCameraIcon className={`h-5 w-5 ${meeting.live ? "text-red-500" : "text-gray-400"}`} aria-hidden="true" />
