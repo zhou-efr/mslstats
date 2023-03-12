@@ -18,9 +18,10 @@ export const updateGames = async () => {
             if (!gameTitles.includes(stream.game_played) && newGames.every((game) => game.title !== stream.game_played)) {
                 newGames.push({
                     title: stream.game_played,
-                    totalDuration: stream.duration,
+                    totalDuration: 0,
                     expectedDuration: 0,
                     finished: false,
+                    numberOfSessions: 0,
                 });
             }
         }
@@ -35,7 +36,8 @@ export const updateGames = async () => {
 
         for (const stream of streamsToUpdate) {
             const game = updatedGames.find((game) => game.title === stream.game_played);
-            game.totalDuration += stream.duration;
+            game.totalDuration += stream.game_end - stream.game_start;
+            game.numberOfSessions += 1;
             await game.save();
         }
     } catch (error) {
