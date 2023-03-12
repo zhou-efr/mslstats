@@ -1,25 +1,26 @@
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { isAdministrator } from '@/lib/auth0/administrators';
+import {usePathname, useRouter} from 'next/navigation';
+import {useUser} from '@auth0/nextjs-auth0/client';
+import {isAdministrator} from '@/lib/auth0/administrators';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Tabs() {
-    const { user, error, isLoading } = useUser();
+    const {user, error, isLoading} = useUser();
 
     const rooter = useRouter();
     const pathname = usePathname();
 
     const tabs = [
-        { name: 'Home', href: '/', current: false },
-        { name: 'Stats', href: '/stats', current: false },
-        { name: 'Paramètres', href: '/settings', current: false, auth: true },
-        { name: 'API', href: '/apiroute', current: false, auth: true, isAdmin: true },
-        { name: 'Data', href: '/data', current: false, auth: true, isAdmin: true },
-        { name: 'About', href: '/about', current: false },
+        {name: 'Home', href: '/', current: false},
+        {name: 'Stats', href: '/stats', current: false},
+        {name: 'Games', href: '/games', current: false},
+        {name: 'Paramètres', href: '/settings', current: false, auth: true},
+        {name: 'API', href: '/apiroute', current: false, auth: true, isAdmin: true},
+        {name: 'Data', href: '/data', current: false, auth: true, isAdmin: true},
+        {name: 'About', href: '/about', current: false},
     ]
 
     tabs.forEach((tab) => {
