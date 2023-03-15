@@ -36,7 +36,7 @@ export const getServerSideProps = async (ctx) => {
                 datetime: _doc.started_at.toLocaleDateString(),
                 iconBackground: 'bg-gray-400',
             };
-    }).filter(stream => stream !== undefined);
+    }).filter(stream => stream !== undefined).sort((a, b) => (a.started_at > b.started_at) ? 1 : -1);
 
     return {
         props: {

@@ -32,6 +32,12 @@ export const updateGames = async () => {
         const updatedGames = await Game.find({});
         const updatedGamesTitles = updatedGames.map((game) => game.title);
 
+        for (const game of updatedGames) {
+            game.totalDuration = 0;
+            game.numberOfSessions = 0;
+            await game.save();
+        }
+
         const streamsToUpdate = streams.filter((stream) => updatedGamesTitles.includes(stream.game_played));
 
         for (const stream of streamsToUpdate) {
