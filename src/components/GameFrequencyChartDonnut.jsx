@@ -4,14 +4,14 @@ import {Doughnut} from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function GameFrequencyChartDonnut({gameFrequency, gameFrequencyLabels}) {
+export function GameFrequencyChartDonnut({inputdata, inputdataLabels}) {
 
     const data = useMemo(() => ({
-        labels: gameFrequencyLabels,
+        labels: inputdataLabels,
         datasets: [
             {
                 label: 'Game Frequency',
-                data: gameFrequency,
+                data: inputdata,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -31,7 +31,7 @@ export function GameFrequencyChartDonnut({gameFrequency, gameFrequencyLabels}) {
                 borderWidth: 1,
             },
         ],
-    }), [gameFrequencyLabels, gameFrequency]);
+    }), [inputdataLabels, inputdata]);
 
     return <Doughnut data={data} />;
 }

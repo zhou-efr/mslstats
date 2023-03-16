@@ -3,6 +3,7 @@ import {getGames} from "@mongo/Game/getGames";
 import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/20/solid";
 import {MonthlyStatPage} from "@/components/MonthlyStatPage";
 import {useMemo, useState} from "react";
+import MonthlyHighlight from "@/components/monthlyhighlight";
 
 export async function getServerSideProps(ctx) {
     const rawstreams = await getStreams();
@@ -56,6 +57,7 @@ export default function StatsPage({basestreams, basegames, basemonth}) {
                     <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
                 </button>
             </div>
+            <MonthlyHighlight month={month}/>
             <MonthlyStatPage streams={streams} games={games}/>
         </div>
     )
