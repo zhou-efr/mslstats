@@ -12,21 +12,31 @@ ChartJS.register(
 );
 
 
-export const GameTimeChartRadar = ({gameTime, gameTimeLabels}) => {
+export const GameTimeChartRadar = ({inputdata, inputdataLabels}) => {
     const data = useMemo(() => ({
-        labels: gameTimeLabels,
+        labels: inputdataLabels,
         datasets: [
             {
                 label: 'Game Time in hours',
-                data: gameTime,
+                data: inputdata,
                 backgroundColor: 'rgba(129,140,248,0.55)',
                 borderColor: '#4f46e5',
                 borderWidth: 1,
             },
         ],
-    }), [gameTimeLabels, gameTime])
+    }), [inputdataLabels, inputdata]);
 
-    console.log(data)
+    const options = {
+        scale: {
+            r: {
+                beginAtZero: true,
+                min: 0,
+            }
+        }
+    }
 
-    return <Radar data={data} />
+
+    console.log(options)
+
+    return <Radar data={data} options={options}/>
 }

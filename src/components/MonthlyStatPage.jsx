@@ -4,6 +4,7 @@ import {GameTimeChartRadar} from "@/components/GameTimeChartRadar";
 import AverageTime from "@/components/AverageTime";
 import StatTable from "@/components/StatTable";
 import {useMemo} from "react";
+import MonthlyRecords from "@/components/monthlyrecords";
 
 export const MonthlyStatPage = ({streams, games}) => {
     const stats = useMemo(() => {
@@ -117,7 +118,7 @@ export const MonthlyStatPage = ({streams, games}) => {
                 name: 'De pure gaming',
                 value: stats[stats.indexOf(stats.find(stat => stat.name === "Durée de jeux"))].total
             },
-            {id: 2, name: 'Jeux complétés en 2023', value: finishedGame},
+            {id: 2, name: 'Chansons uniques et parfaites !', value: "Coming Soon"},
             {
                 id: 3,
                 name: 'En moyenne de discutions passionnantes',
@@ -187,20 +188,59 @@ export const MonthlyStatPage = ({streams, games}) => {
             }, {gameTime: [], gameTimeLabels: []});
     }, [streams]);
 
+    const streamRecords = useMemo(() => {
+        const longuestStream = streams.sort((a, b) => b.duration - a.duration)[0];
+        const longuestTalk = streams.sort((a, b) => b.game_start + b.duration - b.game_end - (a.game_start + a.duration - a.game_end))[0];
+        const longuestGame = streams.sort((a, b) => b.game_end - b.game_start - (a.game_end - a.game_start))[0];
+        return [
+            {
+                // longest stream
+                id: 1,
+                title: "Stream le plus long :",
+                name: longuestStream.title,
+                href: longuestStream.url,
+                imageUrl: longuestStream.thumbnail_url || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                date: new Date(longuestStream.started_at).toDateString(),
+                stat: durationToTime(longuestStream.duration),
+            },
+            {
+                // longest talk
+                id: 2,
+                title: "La plus longue discution : ",
+                name: longuestTalk.title,
+                href: longuestTalk.url,
+                imageUrl: longuestTalk.thumbnail_url || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                date: new Date(longuestTalk.started_at).toDateString(),
+                stat: durationToTime(longuestTalk.game_start + longuestTalk.duration - longuestTalk.game_end),
+            },
+            {
+                // longest game
+                id: 3,
+                title: "La plus grosse session de jeux : ",
+                name: longuestGame.title,
+                href: longuestGame.url,
+                imageUrl: longuestGame.thumbnail_url || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                date: new Date(longuestGame.started_at).toDateString(),
+                stat: durationToTime(longuestGame.game_end - longuestGame.game_start),
+            },
+        ]
+    }, [streams]);
+
     return (
         <>
             <StatsWithBackground {...{highlights}}/>
-            <div className="w-full flex flex-wrap justify-around my-10">
+            <div className="w-full flex flex-wrap justify-around my-24">
                 <div className={"flex flex-col items-center w-full lg:w-1/2 h-[30rem]"}>
                     <h3 className="text-base font-semibold leading-6 text-gray-900">Fréquence des jeux</h3>
-                    <GameFrequencyChartDonnut {...{gameFrequency, gameFrequencyLabels}}/>
+                    <GameFrequencyChartDonnut inputdata={gameFrequency} inputdataLabels={gameFrequencyLabels}/>
                 </div>
                 <div className={"flex flex-col items-center w-full lg:w-1/2 h-96 lg:h-[30rem]"}>
                     <h3 className="text-base font-semibold leading-6 text-gray-900">Temps de jeu</h3>
-                    <GameTimeChartRadar {...{gameTime, gameTimeLabels}}/>
+                    <GameTimeChartRadar inputdata={gameTime} inputdataLabels={gameTimeLabels}/>
                 </div>
             </div>
             <AverageTime {...{highlightedMedian}}/>
+            <MonthlyRecords records={streamRecords}/>
             <StatTable {...{stats}}/>
         </>
     )

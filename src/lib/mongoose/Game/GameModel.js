@@ -6,6 +6,8 @@ const gameSchema = new mongoose.Schema({
     totalDuration: {type: Number, required: true},
     finished: {type: Boolean, required: true},
     numberOfSessions: {type: Number, required: true},
+    thumbnail: {type: String, required: true},
+    youtube: {type: String, required: true},
 });
 
 module.exports = mongoose.models.Game || mongoose.model('Game', gameSchema);
