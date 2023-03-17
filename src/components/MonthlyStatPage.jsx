@@ -6,7 +6,7 @@ import StatTable from "@/components/StatTable";
 import {useMemo} from "react";
 import MonthlyRecords from "@/components/monthlyrecords";
 
-export const MonthlyStatPage = ({streams, games}) => {
+export const MonthlyStatPage = ({streams}) => {
     const stats = useMemo(() => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
@@ -109,8 +109,6 @@ export const MonthlyStatPage = ({streams, games}) => {
         ];
     }, [streams]);
 
-    const finishedGame = useMemo(() => games?.reduce((acc, game) => game.finished ? acc + 1 : acc, 0) || 0, [games]);
-
     const highlights = useMemo(() => {
         return [
             {
@@ -130,7 +128,7 @@ export const MonthlyStatPage = ({streams, games}) => {
                 value: stats[stats.indexOf(stats.find(stat => stat.name === "Durée du live"))].max
             },
         ]
-    }, [finishedGame, stats]);
+    }, [stats]);
 
     const highlightedMedian = useMemo(() => {
         return [

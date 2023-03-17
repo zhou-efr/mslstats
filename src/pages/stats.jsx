@@ -57,8 +57,16 @@ export default function StatsPage({basestreams, basegames, basemonth}) {
                     <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
                 </button>
             </div>
-            <MonthlyHighlight month={month}/>
-            <MonthlyStatPage streams={streams} games={games}/>
+            {
+                (streams.length > 0) ? (
+                    <>
+                        <MonthlyHighlight month={month}/>
+                        <MonthlyStatPage streams={streams}/>
+                    </>
+                ) : (
+                    <div className="text-center text-gray-500">Pas de statistiques pour ce mois</div>
+                )
+            }
         </div>
     )
 }
