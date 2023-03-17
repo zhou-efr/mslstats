@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 
-export default function StatsWithBackground({highlights}) {
+export default function StatsWithBackground({highlights, monthlyText}) {
 
     return (
         <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 rounded-lg">
@@ -42,8 +42,7 @@ export default function StatsWithBackground({highlights}) {
                         Mathieu Sommet Live
                     </p>
                     <p className="mt-6 text-lg leading-8 text-gray-300">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste
-                        dolor cupiditate blanditiis ratione.
+                        {monthlyText ? monthlyText : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione."}
                     </p>
                 </div>
                 <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 text-white sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">

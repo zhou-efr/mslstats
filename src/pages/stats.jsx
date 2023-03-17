@@ -30,11 +30,12 @@ export async function getServerSideProps(ctx) {
 }
 
 const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+const montlyTexts = ['', '', 'Joseph est-ce que... Ca va ?']
 export default function StatsPage({basestreams, basegames, basemonth}) {
     const [month, setMonth] = useState(basemonth);
 
     const streams = useMemo(() => basestreams.filter(stream => new Date(stream.started_at).getMonth() === month), [basestreams, month]);
-    const games = useMemo(() => basegames.filter(game => new Date(game.started_at).getMonth() === month), [basegames, month]);
+    // const games = useMemo(() => basegames.filter(game => new Date(game.started_at).getMonth() === month), [basegames, month]);
 
     return (
         <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5 items-center w-full">
@@ -57,8 +58,16 @@ export default function StatsPage({basestreams, basegames, basemonth}) {
                     <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
                 </button>
             </div>
-            <MonthlyHighlight month={month}/>
-            <MonthlyStatPage streams={streams} games={games}/>
+            {
+                (streams.length > 0) ? (
+                    <>
+                        <MonthlyHighlight month={month}/>
+                        <MonthlyStatPage streams={streams} games={basegames} monthlyText={montlyTexts[month]}/>
+                    </>
+                ) : (
+                    <div className="text-center text-gray-500">Pas de statistiques pour ce mois</div>
+                )
+            }
         </div>
     )
 }

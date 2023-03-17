@@ -132,14 +132,14 @@ export default function GamePage({streams, game}) {
                                             ) : null}
                                             <div className="relative flex space-x-3">
                                                 <div>
-                  <span
-                      className={classNames(
-                          event.iconBackground,
-                          'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
-                      )}
-                  >
-                    <Icon className="h-5 w-5 text-white" aria-hidden="true"/>
-                  </span>
+                                                    <span
+                                                        className={classNames(
+                                                            event.iconBackground,
+                                                            'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
+                                                        )}
+                                                    >
+                                                        <Icon className="h-5 w-5 text-white" aria-hidden="true"/>
+                                                    </span>
                                                 </div>
                                                 <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                                                     <div>

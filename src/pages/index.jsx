@@ -1,26 +1,21 @@
-import { Fragment, useMemo } from 'react'
+import React, {useMemo, useState} from 'react'
 import {
     CalendarIcon,
-    EllipsisHorizontalIcon,
-    MapPinIcon,
-    ClockIcon,
-    UserIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
+    ClockIcon,
+    UserIcon,
     VideoCameraIcon,
 } from '@heroicons/react/20/solid'
-import { Menu, Transition } from '@headlessui/react'
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
 import Image from 'next/image';
 import 'react-calendar/dist/Calendar.css';
 import Link from 'next/link';
-import { getLatestStream } from "@twitch/getLatestStream";
-import { getCurrentStream } from '@twitch/getCurrentStream';
-import { today } from '@internationalized/date';
-import { getSession } from "@auth0/nextjs-auth0";
-import { getUser } from "@mongo/user/getUser";
+import {getLatestStream} from "@twitch/getLatestStream";
+import {getCurrentStream} from '@twitch/getCurrentStream';
+import {getSession} from "@auth0/nextjs-auth0";
+import {getUser} from "@mongo/user/getUser";
 import GenericSelect from '@/components/GenericSelect';
+import ImageWithFallback from "@/components/imageWithFallBack";
 
 const meetings = [
     {
@@ -183,8 +178,13 @@ export async function getServerSideProps(ctx) {
             streams_by_day[day] = [];
         }
         streams_by_day[day].push(stream);
-        streamer_names.push(stream.user_login);
+        if (!streamer_names.includes(stream.user_login)) {
+            streamer_names.push(stream.user_login);
+        }
     }
+
+    console.log(streams_by_day)
+    console.log(streamer_names)
 
     return {
         props: {
@@ -230,7 +230,10 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
         // console.log(streams[selectedDay].filter((stream) => streamers.includes(stream.user_login)));
 
         if (view === "day") {
-            toDisplay = streams[selectedDay]?.filter((stream) => streamers.includes(stream.user_login)) || [];
+            toDisplay = streams[selectedDay]?.filter((stream) => {
+                console.log(streamers.includes(stream.user_login))
+                return streamers.includes(stream.user_login)
+            }) || [];
         }
 
         if (view === "week") {
@@ -253,6 +256,9 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
 
         return toDisplay || [];
     }, [streamers, streams, value, view]);
+
+    const mslProgUrl = useMemo(() => `https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/prog/msl/${("0" + value.getWeek()).slice(-2)}-${value.getFullYear()}.jpg`, [value]);
+    const ponceProgUrl = useMemo(() => `https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/prog/ponce/${("0" + value.getWeek()).slice(-2)}-${value.getFullYear()}.jpg`, [value]);
 
     const handleMonthChange = (month) => {
         setCurrentMonth(month);
@@ -348,17 +354,29 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                             </button>
                         ))}
                     </div>
-                    <button
-                        type="button"
-                        className="mt-8 w-full rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Add event
-                    </button>
+                    <ImageWithFallback
+                        className="mt-4"
+                        width={500}
+                        height={500}
+                        src={mslProgUrl}
+                        fallbackSrc={`https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png`}
+                    />
+                    {
+                        streamer_names.includes("ponce") && <ImageWithFallback
+                            className="mt-4"
+                            width={500}
+                            height={500}
+                            src={ponceProgUrl}
+                            fallbackSrc={`https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png`}
+                        />
+                    }
                 </div>
                 <ol className="mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8">
                     {displayedStreams.map((meeting) => (
                         <li key={meeting.id} className="relative flex space-x-6 py-6 xl:static">
-                            <Image width={56} height={56} src={meeting.thumbnail_url.replace("%{width}", "56").replace("%{height}", "56").replace("{width}", "56").replace("{height}", "56")} alt="" className="h-14 w-14 flex-none rounded-md" />
+                            <Image width={56} height={56}
+                                   src={meeting.thumbnail_url.replace("%{width}", "56").replace("%{height}", "56").replace("{width}", "56").replace("{height}", "56")}
+                                   alt="" className="h-14 w-14 flex-none rounded-md"/>
                             <div className="flex-auto">
                                 <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">
                                     <Link href={meeting.url} className="hover:text-indigo-900 cursor-pointer">

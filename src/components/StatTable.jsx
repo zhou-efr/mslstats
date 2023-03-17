@@ -26,7 +26,7 @@ export default function StatTable({stats}) {
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-gray-900">Statistiques</h1>
                     <p className="mt-2 text-sm text-gray-700">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quo, repellendus!
+                        Envie de savoir vers quelle heure arriver pour du gaming ? C{"'"}est ici que ça se passe !
                     </p>
                 </div>
             </div>
