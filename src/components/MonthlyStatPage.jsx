@@ -6,7 +6,7 @@ import StatTable from "@/components/StatTable";
 import {useMemo} from "react";
 import MonthlyRecords from "@/components/monthlyrecords";
 
-export const MonthlyStatPage = ({streams}) => {
+export const MonthlyStatPage = ({streams, games, monthlyText}) => {
     const stats = useMemo(() => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
@@ -197,7 +197,7 @@ export const MonthlyStatPage = ({streams}) => {
                 title: "Stream le plus long :",
                 name: longuestStream.title,
                 href: longuestStream.url,
-                imageUrl: longuestStream.thumbnail_url || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                imageUrl: games?.find((game, index) => game.title === longuestStream.game_played)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestStream.started_at).toDateString(),
                 stat: durationToTime(longuestStream.duration),
             },
@@ -207,17 +207,17 @@ export const MonthlyStatPage = ({streams}) => {
                 title: "La plus longue discution : ",
                 name: longuestTalk.title,
                 href: longuestTalk.url,
-                imageUrl: longuestTalk.thumbnail_url || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                imageUrl: games?.find((game, index) => game.title === longuestTalk.game_played)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestTalk.started_at).toDateString(),
                 stat: durationToTime(longuestTalk.game_start + longuestTalk.duration - longuestTalk.game_end),
             },
             {
                 // longest game
                 id: 3,
-                title: "La plus grosse session de jeux : ",
+                title: "La plus grosse session de g@m1ng : ",
                 name: longuestGame.title,
                 href: longuestGame.url,
-                imageUrl: longuestGame.thumbnail_url || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                imageUrl: games?.find((game, index) => game.title === longuestGame.game_played)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestGame.started_at).toDateString(),
                 stat: durationToTime(longuestGame.game_end - longuestGame.game_start),
             },
@@ -226,7 +226,7 @@ export const MonthlyStatPage = ({streams}) => {
 
     return (
         <>
-            <StatsWithBackground {...{highlights}}/>
+            <StatsWithBackground {...{highlights, monthlyText}}/>
             <div className="w-full flex flex-wrap justify-around my-24">
                 <div className={"flex flex-col items-center w-full lg:w-1/2 h-[30rem]"}>
                     <h3 className="text-base font-semibold leading-6 text-gray-900">Fréquence des jeux</h3>
