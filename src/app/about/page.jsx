@@ -7,12 +7,6 @@ export default function AboutPage() {
                 <div className="mx-auto grid max-w-2xl grid-cols-1 items-start gap-y-16 gap-x-8 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
                     <div className="lg:pr-4">
                         <div className="relative overflow-hidden rounded-3xl bg-gray-900 px-6 pb-9 pt-64 shadow-2xl sm:px-12 lg:max-w-lg lg:px-8 lg:pb-8 xl:px-10 xl:pb-10">
-                            {/* <Image
-                                fill
-                                className="absolute inset-0 h-full w-full object-cover brightness-125 saturate-0"
-                                src="https://images.unsplash.com/photo-1630569267625-157f8f9d1a7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80"
-                                alt=""
-                            /> */}
                             <div className="absolute inset-0 bg-gray-900 mix-blend-multiply" />
                             <svg
                                 viewBox="0 0 1097 845"
@@ -54,8 +48,8 @@ export default function AboutPage() {
                                 <Image src="https://tailwindui.com/img/logos/workcation-logo-white.svg" alt="" height={48} width={48} className="h-12 w-auto" />
                                 <blockquote className="mt-6 text-xl font-semibold leading-8 text-white">
                                     <p>
-                                        “Amet amet eget scelerisque tellus sit neque faucibus non eleifend. Integer eu praesent at a. Ornare
-                                        arcu gravida natoque erat et cursus tortor.”
+                                        “Maître Filou spécialisé Coolos. Has Been de Youtube. Active le mode difficile
+                                        ou je m{"'"}ennuie. ”
                                     </p>
                                 </blockquote>
                                 <figcaption className="mt-6 text-sm leading-6 text-gray-300">
