@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     scrollRestoration: true,
-    appDir: true,
   },
   images: {
     remotePatterns: [
@@ -18,6 +17,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'static-cdn.jtvnw.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
       },
     ],
   },
