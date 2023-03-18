@@ -1,4 +1,4 @@
-import { getToken } from '@/lib/twitch/getToken'
+import {getToken} from '@/lib/twitch/getToken'
 
 export const getCurrentStream = async (user_id) => {
     try {
@@ -17,8 +17,6 @@ export const getCurrentStream = async (user_id) => {
             headers: myHeaders,
             redirect: 'follow'
         };
-
-        console.log(process.env["TWITCH_API_URL"] + "/helix/streams?" + urlencoded);
 
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/streams?" + urlencoded, requestOptions);
         const data = await res.json();

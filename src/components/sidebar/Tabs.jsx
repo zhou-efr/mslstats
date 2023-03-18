@@ -1,3 +1,4 @@
+"use client";
 import Link from 'next/link';
 import {usePathname, useRouter} from 'next/navigation';
 import {useUser} from '@auth0/nextjs-auth0/client';

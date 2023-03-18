@@ -1,9 +1,8 @@
 import {getSession, withPageAuthRequired} from "@auth0/nextjs-auth0";
-import { getUser } from "@mongo/user/getUser";
+import {getUser} from "@mongo/user/getUser";
 import {redirect, useRouter} from "next/navigation";
 import {Fragment, useState} from "react";
-import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/24/outline'
+import {Dialog, Transition} from '@headlessui/react'
 
 export const getServerSideProps = withPageAuthRequired({
     async getServerSideProps(context) {

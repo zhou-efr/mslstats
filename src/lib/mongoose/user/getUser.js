@@ -1,5 +1,5 @@
 import dbConnect from '../dbConnect';
-import { createUser } from './createUser';
+import {createUser} from './createUser';
 import User from './UserModel';
 
 export async function getUser(email) {
@@ -13,6 +13,6 @@ export async function getUser(email) {
 
         return user;
     } catch (error) {
-        throw Error(`Error while getting user: ${error}`);
+        throw Error(`Error while getting user ${email}: ${error}`);
     }
 }

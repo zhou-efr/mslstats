@@ -1,10 +1,9 @@
 import Head from 'next/head'
 
-import { useState } from 'react'
-import { GenericButton } from '@/components/GenericButton';
+import {useState} from 'react'
+import {GenericButton} from '@/components/GenericButton';
 import ObjectDisplayer from '@/components/ObjectDisplayer';
 import {useUser, withPageAuthRequired} from "@auth0/nextjs-auth0/client";
-import {getSession} from "@auth0/nextjs-auth0";
 import {isAdministrator} from "@/lib/auth0/administrators";
 
 const GameUpdateRoute = () => {
