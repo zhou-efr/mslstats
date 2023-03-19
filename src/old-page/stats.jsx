@@ -1,6 +1,5 @@
 import {getStreams} from "@mongo/Stream/getStreams";
 import {getGames} from "@mongo/Game/getGames";
-import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/20/solid";
 import {MonthlyStatPage} from "@/components/MonthlyStatPage";
 import {useMemo, useState} from "react";
 import MonthlyHighlight from "@/components/monthlyhighlight";
@@ -39,25 +38,6 @@ export default function StatsPage({basestreams, basegames, basemonth}) {
 
     return (
         <div className="flex flex-col gap-4 overflow-x-hidden w-full px-12 pb-5 items-center w-full">
-            <div className="flex items-center text-gray-900 w-48">
-                <button
-                    type="button"
-                    onClick={() => setMonth((month - 1) % 12)}
-                    className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-                >
-                    <span className="sr-only">Previous month</span>
-                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true"/>
-                </button>
-                <div className="flex-auto text-center text-sm font-semibold">{months[month]}</div>
-                <button
-                    type="button"
-                    onClick={() => setMonth((month + 1) % 12)}
-                    className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-                >
-                    <span className="sr-only">Next month</span>
-                    <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
-                </button>
-            </div>
             {
                 (streams.length > 0) ? (
                     <>
