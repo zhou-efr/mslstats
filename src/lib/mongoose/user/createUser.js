@@ -5,12 +5,11 @@ export async function createUser(email) {
     try {
         await dbConnect();
 
-        const newUser = await User.create({
+        return await User.create({
             email,
             followed_streams: [],
+            view_streams: [],
         });
-
-        return newUser;
     } catch (error) {
         throw Error(`Error while creating user: ${error}`);
     }

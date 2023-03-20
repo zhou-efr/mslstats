@@ -1,16 +1,27 @@
-import {UserIcon} from '@heroicons/react/20/solid'
+import {CheckCircleIcon, UserIcon} from '@heroicons/react/20/solid'
 import {getGames} from "@mongo/Game/getGames";
 import {getStreams} from "@mongo/Stream/getStreams";
 import Link from "next/link";
+import {getUser} from "@mongo/user/getUser";
+import {getSession} from "@auth0/nextjs-auth0";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {useUser} from "@auth0/nextjs-auth0/client";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export const getServerSideProps = async (ctx) => {
+export async function getServerSideProps(ctx) {
     const {gameid} = ctx.params;
+    const session = await getSession(ctx.req, ctx.res);
     const rawstreams = await getStreams();
     const rawgames = await getGames();
+    let twitch_user = null;
+
+    if (session) {
+        twitch_user = await getUser(session?.user?.email);
+    }
 
     const rawgame = rawgames.find(game => game._id.toString() === gameid);
     const gamename = rawgame.title;
@@ -28,14 +39,15 @@ export const getServerSideProps = async (ctx) => {
                 ..._doc,
                 id: index + 1,
                 _id: _doc._id.toString(),
+                streamid: _doc.id,
                 started_at: _doc.started_at.getTime(),
                 content: _doc.title,
                 target: "Lien",
                 href: _doc.url,
                 date: _doc.started_at.toDateString(),
-                icon: "UserIcon",
+                icon: twitch_user ? twitch_user.view_streams.includes(_doc.id) ? "CheckCircleIcon" : "UserIcon" : "UserIcon",
                 datetime: _doc.started_at.toLocaleDateString(),
-                iconBackground: 'bg-gray-400',
+                iconBackground: twitch_user ? twitch_user.view_streams.includes(_doc.id) ? "bg-green-300" : "bg-indigo-300" : "bg-indigo-300",
             };
     }).filter(stream => stream !== undefined).sort((a, b) => (a.started_at > b.started_at) ? 1 : -1);
 
@@ -43,8 +55,6 @@ export const getServerSideProps = async (ctx) => {
         ...rawgame._doc,
         _id: rawgame._id.toString(),
     }
-
-    console.log(game)
 
     return {
         props: {
@@ -64,9 +74,50 @@ function YoutubeIcon(props) {
 }
 
 export default function GamePage({streams, game}) {
+    const [gameStreams, setGameStreams] = useState(streams);
+    const {user, error, isLoading} = useUser();
+
+    const router = useRouter();
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>{error.message}</div>;
+
     const icons = {
-        "UserIcon": UserIcon
+        "UserIcon": UserIcon,
+        "CheckCircleIcon": CheckCircleIcon,
     }
+
+    const handleViewStream = async (stream) => {
+        const res = await fetch("/api/db/viewedstream", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                streamid: stream.streamid,
+            }),
+        });
+
+        if (res.status !== 201) {
+            alert("Une erreur est survenue");
+            router.refresh();
+            return;
+        }
+
+        const newStreams = gameStreams.map((streamaping) => {
+            if (stream.streamid === streamaping.streamid) {
+                return {
+                    ...streamaping,
+                    icon: "CheckCircleIcon",
+                    iconBackground: "bg-green-300",
+                }
+            }
+            return streamaping;
+        });
+
+        setGameStreams(newStreams);
+    }
+
     return (
         <div className="relative isolate overflow-hidden bg-white">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -121,7 +172,7 @@ export default function GamePage({streams, game}) {
                     </div>
                     <div className="max-w-xl text-base leading-7 text-gray-700 lg:col-span-7">
                         <ul role="list" className="-mb-8">
-                            {streams.map((event, eventIdx) => {
+                            {gameStreams.map((event, eventIdx) => {
                                 const Icon = icons[event.icon]
                                 return (
                                     <li key={event.id}>
@@ -138,7 +189,11 @@ export default function GamePage({streams, game}) {
                                                             'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
                                                         )}
                                                     >
-                                                        <Icon className="h-5 w-5 text-white" aria-hidden="true"/>
+                                                        <Icon
+                                                            className={`h-5 w-5 text-white ${user ? 'cursor-pointer' : ""} `}
+                                                            aria-hidden="true"
+                                                            onClick={() => event.icon !== "CheckCircleIcon" && user ? handleViewStream(event) : null}
+                                                        />
                                                     </span>
                                                 </div>
                                                 <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
