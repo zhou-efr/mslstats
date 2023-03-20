@@ -22,7 +22,7 @@ export async function addViewedStream(email, streamer_id) {
             user
         })
 
-        await user.update({view_streams: viewed_streams});
+        await user.updateOne({view_streams: viewed_streams});
 
         return user;
     } catch (error) {
