@@ -22,7 +22,7 @@ export default function MonthlyHighlight({month}) {
                             Ca pique Endoloris...
                         </h1>
                         <p className="mt-6 text-lg leading-8 text-gray-600 flex flex-col items-center gap-3 ">
-                            C{"'"}est après avoir enflammé les salles de poudlard que Maltazard Voldesub revient un
+                            C{"'"}est après avoir enflammé les salles de Poudlard que Maltazard Voldesub revient un
                             nouveau single pour ravir vos oreilles.
                             <audio controls
                                    src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"}/>
