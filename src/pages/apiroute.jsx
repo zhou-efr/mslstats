@@ -1,10 +1,9 @@
 import Head from 'next/head'
 
-import { useState } from 'react'
-import { GenericButton } from '@/components/GenericButton';
+import {useState} from 'react'
+import {GenericButton} from '@/components/GenericButton';
 import ObjectDisplayer from '@/components/ObjectDisplayer';
 import {useUser, withPageAuthRequired} from "@auth0/nextjs-auth0/client";
-import {getSession} from "@auth0/nextjs-auth0";
 import {isAdministrator} from "@/lib/auth0/administrators";
 
 const GameUpdateRoute = () => {
@@ -37,7 +36,6 @@ const GameUpdateRoute = () => {
         </>
     )
 }
-
 const TokenRoute = () => {
     const [token, setToken] = useState();
 
@@ -117,7 +115,6 @@ const UserRoute = () => {
         </>
     );
 }
-
 const StreamRoute = () => {
     const [streams, setStreams] = useState();
     const [streamerId, setStreamerId] = useState('798312463');
@@ -159,13 +156,44 @@ const StreamRoute = () => {
                 <GenericButton onClick={handleGetStream} variant="primary" size="medium">Get Stream</GenericButton>
             </div>
             {
-                streams ? streams.map((stream, index) => <ObjectDisplayer key={index} object={stream} name={stream.title} subtext={stream.id} />)
+                streams ? streams.map((stream, index) => <ObjectDisplayer key={index} object={stream}
+                                                                          name={stream.title} subtext={stream.id}/>)
                     : (
                         <span className="text-sm font-medium text-slate-900">
                             no stream yet
                         </span>
                     )
             }
+        </>
+    )
+}
+const ConvertStreamRoute = () => {
+    const [update, setUpdate] = useState(false);
+
+    const handleGetToken = async () => {
+        const response = await fetch('/api/db/convertroute', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (response.status === 201) {
+            setUpdate(true);
+        }
+    }
+
+    return (
+        <>
+            <GenericButton onClick={handleGetToken} variant="primary" size="medium">Convert streams</GenericButton>
+            <span className="text-sm font-medium text-slate-900">
+                {
+                    update ? (
+                        <div>converted at {(new Date()).toLocaleTimeString()}</div>
+                    ) : (
+                        <div>no convertion yet</div>
+                    )
+                }
+            </span>
         </>
     )
 }
@@ -200,7 +228,8 @@ export default withPageAuthRequired(function Home() {
                 <GameUpdateRoute />
                 <TokenRoute />
                 <UserRoute />
-                <StreamRoute />
+                <StreamRoute/>
+                <ConvertStreamRoute/>
             </div>
         </>
     )

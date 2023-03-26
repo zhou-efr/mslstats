@@ -2,11 +2,11 @@ import {Container} from "@/components/Container";
 import {getStream} from "@twitch/getStream";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {getGameList} from "@mongo/Stream/getGameList";
 import GenericCombobox from "@/components/GenericCombobox";
 import {getSession, withPageAuthRequired} from "@auth0/nextjs-auth0";
 import {isAdministrator} from "@/lib/auth0/administrators";
 import TimeCalculator from "@/components/TimeCalculator";
+import {getGames} from "@mongo/Game/getGames";
 
 export const getServerSideProps = withPageAuthRequired({
     async getServerSideProps(context) {
@@ -28,10 +28,9 @@ export const getServerSideProps = withPageAuthRequired({
             }
         }
 
-
         const stream_id = context.query.streamid;
         const stream = await getStream(stream_id);
-        const gamelist = await getGameList();
+        const gamelist = (await getGames()).map(game => game.title);
 
         // 4h11m44s to number second
         const duration = stream.duration.split("h").map((e) => e.split("m").map((e) => e.split("s"))).flat().filter((e) => e != "").map((e) => parseInt(e));
@@ -48,7 +47,7 @@ export const getServerSideProps = withPageAuthRequired({
     }
 })
 
-export default function RegisterPage({ stream = [], gamelist = [] }) {
+export default function RegisterPage({stream = {}, gamelist = []}) {
     const router = useRouter();
 
     const [registration, setRegistration] = useState({
@@ -61,12 +60,12 @@ export default function RegisterPage({ stream = [], gamelist = [] }) {
         streamer_id: stream.user_id,
         streamer_name: stream.user_name,
 
-        game_start: 0,
-        game_end: 0,
-
-        game_planned: "",
-        game_played: "",
-        game_secondary: "",
+        games: [{
+            title: "",
+            start: 0,
+            end: 0,
+            planned: false,
+        }],
     });
 
     const handleChange = (e) => {
@@ -99,6 +98,31 @@ export default function RegisterPage({ stream = [], gamelist = [] }) {
         alert("Stream enregistré");
         router.push("/data")
     };
+
+    const handleAddGame = () => {
+        setRegistration({
+            ...registration, games: [...registration.games, {
+                title: "",
+                start: 0,
+                end: 0,
+                planned: false,
+            }]
+        });
+    }
+
+    const handleRemoveGame = (index) => {
+        setRegistration({...registration, games: registration.games.filter((_, i) => i !== index)});
+    }
+
+    const handleGameChange = (index, key, value) => {
+        const newGames = registration.games.map((game, i) => {
+            if (i === index) {
+                return {...game, [key]: value};
+            }
+            return game;
+        });
+        setRegistration({...registration, games: newGames});
+    }
 
     return (
         <Container>
@@ -199,59 +223,98 @@ export default function RegisterPage({ stream = [], gamelist = [] }) {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
-                    <div className="md:grid md:grid-cols-3 md:gap-6">
-                        <div className="md:col-span-1">
-                            <h3 className="text-base font-semibold leading-6 text-gray-900">Game info</h3>
-                            <p className="mt-1 text-sm text-gray-500">Enregistrement de <span className="italic">{stream.title}</span>.</p>
-                        </div>
-                        <div className="mt-5 md:col-span-2 md:mt-0">
-                            <div className="grid grid-cols-6 gap-6">
-                                {
-                                    Object.keys(registration).filter((key) => key.toLocaleLowerCase().includes("game")).map((key, index) => {
-                                        if (key === "game_start" || key === "game_end") {
-                                            return (
-                                                <div key={index} className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        {key} (s)
-                                                    </label>
-                                                    <input
-                                                        required={true}
-                                                        type={"number"}
-                                                        name={key}
-                                                        id={key}
-                                                        autoComplete={key}
-                                                        onChange={handleChange}
-                                                        className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    />
-                                                </div>
-                                            )
-                                        }
 
-                                        return (
-                                            <div key={index} className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                                    {key}
-                                                </label>
-                                                <GenericCombobox
-                                                    genericarray={gamelist}
-                                                    query={registration[key]}
-                                                    setQuery={(value) => setRegistration({ ...registration, [key]: value })}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
+                {
+                    registration.games.map((game, index) => (
+                        <div key={index} className="bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
+                            <div className="md:grid md:grid-cols-3 md:gap-6">
+                                <div className="md:col-span-1">
+                                    <h3 className="text-base font-semibold leading-6 text-gray-900">Game info</h3>
+                                    <p className="mt-1 text-sm text-gray-500">Enregistrement de <span
+                                        className="italic">{stream.title}</span>.</p>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveGame(index)}
+                                        className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                    >
+                                        Remove game
+                                    </button>
+                                </div>
+                                <div className="mt-5 md:col-span-2 md:mt-0">
+                                    <div className="grid grid-cols-6 gap-6">
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label htmlFor="first-name"
+                                                   className="block text-sm font-medium leading-6 text-gray-900">
+                                                Game title
+                                            </label>
+                                            <GenericCombobox
+                                                genericarray={gamelist}
+                                                query={registration.games[index].title}
+                                                setQuery={(value) => handleGameChange(index, "title", value)}
+                                            />
+                                        </div>
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label htmlFor="first-name"
+                                                   className="block text-sm font-medium leading-6 text-gray-900">
+                                                Start (s)
+                                            </label>
+                                            <input
+                                                required={true}
+                                                type={"number"}
+                                                name={"start"}
+                                                id={"start"}
+                                                onChange={(e) => handleGameChange(index, "start", e.target.value)}
+                                                className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            />
+                                        </div>
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label htmlFor="first-name"
+                                                   className="block text-sm font-medium leading-6 text-gray-900">
+                                                End (s)
+                                            </label>
+                                            <input
+                                                required={true}
+                                                type={"number"}
+                                                name={"end"}
+                                                id={"end"}
+                                                onChange={(e) => handleGameChange(index, "end", e.target.value)}
+                                                className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            />
+                                        </div>
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label htmlFor="first-name"
+                                                   className="block text-sm font-medium leading-6 text-gray-900">
+                                                Is planned ?
+                                            </label>
+                                            <input
+                                                required={true}
+                                                type={"checkbox"}
+                                                name={"planned"}
+                                                id={"planned"}
+                                                onChange={(e) => handleGameChange(index, "planned", e.target.checked)}
+                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                // className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    ))
+                }
 
                 <div className="flex justify-end px-4 sm:px-0">
                     <button
                         type="button"
-                        onClick={() => router.push("/data")}
+                        onClick={handleAddGame}
                         className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                        add game
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => router.push("/data")}
+                        className="ml-3 rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     >
                         Cancel
                     </button>
