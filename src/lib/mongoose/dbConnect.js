@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+
 const MONGODB_URI = process.env['MONGO_URI']
 
 /**
@@ -13,7 +14,7 @@ if (!cached) {
 }
 
 async function dbConnect() {
-    console.log(MONGODB_URI);
+    // console.log(MONGODB_URI);
     if (cached.conn) {
         return cached.conn
     }

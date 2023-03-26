@@ -114,9 +114,9 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
             return;
         }
 
-        await fetch("/api/db/games", {
-            method: 'POST',
-        })
+        // await fetch("/api/db/games", {
+        //     method: 'POST',
+        // })
 
         alert("Stream enregistré");
         router.push("/data")

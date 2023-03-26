@@ -1,12 +1,12 @@
-import { CheckCircleIcon, UserIcon } from '@heroicons/react/20/solid'
-import { getGames } from "@mongo/Game/getGames";
-import { getStreams } from "@mongo/Stream/getStreams";
+import {CheckCircleIcon, UserIcon} from '@heroicons/react/20/solid'
+import {getGames} from "@mongo/Game/getGames";
 import Link from "next/link";
-import { getUser } from "@mongo/user/getUser";
-import { getSession } from "@auth0/nextjs-auth0";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import {getUser} from "@mongo/user/getUser";
+import {getSession} from "@auth0/nextjs-auth0";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {useUser} from "@auth0/nextjs-auth0/client";
+import {getStreamsByIds} from "@mongo/Stream/getStreamsByIds";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -15,7 +15,6 @@ function classNames(...classes) {
 export async function getServerSideProps(ctx) {
     const { gameid } = ctx.params;
     const session = await getSession(ctx.req, ctx.res);
-    const rawstreams = await getStreams();
     const rawgames = await getGames();
     let twitch_user = null;
 
@@ -26,19 +25,31 @@ export async function getServerSideProps(ctx) {
     const rawgame = rawgames.find(game => game._id.toString() === gameid);
     const gamename = rawgame.title;
 
-    if (rawstreams === null || gamename === undefined) {
+    if (gamename === undefined) {
         return {
             notFound: true,
         }
     }
 
+    const rawstreams = await getStreamsByIds(rawgame.sessions);
+
+    function any(games, param2) {
+        for (let i = 0; i < games.length; i++) {
+            if (param2(games[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     const streams = rawstreams.map((stream, index) => {
-        const { _doc } = stream;
-        if (_doc.game_played === gamename || _doc.game_secondary === gamename)
+        const {_doc} = stream;
+        if (any(_doc.games, game => game.title === gamename))
             return {
                 ..._doc,
                 id: index + 1,
                 _id: _doc._id.toString(),
+                games: _doc.games.map(game => ({...game._doc, _id: game._doc._id.toString()})),
                 streamid: _doc.id,
                 started_at: _doc.started_at.getTime(),
                 content: _doc.title,
