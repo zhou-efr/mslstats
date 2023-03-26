@@ -287,7 +287,6 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                 Is planned ?
                                             </label>
                                             <input
-                                                required={true}
                                                 type={"checkbox"}
                                                 name={"planned"}
                                                 id={"planned"}
