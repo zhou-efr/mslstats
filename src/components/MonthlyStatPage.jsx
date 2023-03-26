@@ -10,8 +10,8 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
     const stats = useMemo(() => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
-        const gamesStartedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.game_start);
-        const gamesEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration - stream.game_end);
+        const gamesStartedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.games[0].start);
+        const gamesEndedAt = streams.map((stream, index) => unixWithoutDate(stream.started_at) + stream.duration - stream.games[stream.games.length - 1].end);
 
         const startedAt = {
             name: "Début du live",
@@ -46,10 +46,16 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
         }
 
         const streamDuration = streams.map(stream => stream.duration);
-        const streamPreLiveDuration = streams.map(stream => stream.game_start);
-        const streamPostLiveDuration = streams.map(stream => stream.duration - stream.game_end);
-        const streamPreAndPostLiveDuration = streams.map(stream => stream.game_start + stream.duration - stream.game_end);
-        const streamGamesDuration = streams.map(stream => stream.game_end - stream.game_start);
+        const streamPreLiveDuration = streams.map(stream => stream.games.reduce((acc, game, index) => {
+            if (index === 0) {
+                return game.start;
+            } else {
+                return acc + game.start - stream.games[index - 1].end;
+            }
+        }, 0));
+        const streamPostLiveDuration = streams.map(stream => stream.duration - stream.games[stream.games.length - 1].end);
+        const streamPreAndPostLiveDuration = streams.map((_, index) => streamPreLiveDuration[index] + streamPostLiveDuration[index]);
+        const streamGamesDuration = streams.map(stream => stream.games.reduce((acc, game) => acc + game.end - game.start, 0));
 
         const duration = {
             name: "Durée du live",
@@ -96,7 +102,7 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
             total: durationToTime(streamGamesDuration.reduce((acc, stream) => acc + stream, 0)),
         }
 
-        return [
+        return {
             startedAt,
             endedAt,
             gameStartedAt,
@@ -106,7 +112,7 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
             postLiveDuration,
             preAndPostLiveDuration,
             gamesDuration,
-        ];
+        };
     }, [streams]);
 
     const highlights = useMemo(() => {
@@ -114,18 +120,18 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
             {
                 id: 1,
                 name: 'De pure gaming',
-                value: stats[stats.indexOf(stats.find(stat => stat.name === "Durée de jeux"))].total
+                value: stats.gamesDuration.total
             },
             {id: 2, name: 'Chansons uniques et parfaites !', value: "Coming Soon"},
             {
                 id: 3,
                 name: 'En moyenne de discutions passionnantes',
-                value: stats[stats.indexOf(stats.find(stat => stat.name === "Durée discution"))].average
+                value: stats.preAndPostLiveDuration.average
             },
             {
                 id: 4,
                 name: 'Record de durée',
-                value: stats[stats.indexOf(stats.find(stat => stat.name === "Durée du live"))].max
+                value: stats.duration.max
             },
         ]
     }, [stats]);
@@ -134,13 +140,13 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
         return [
             {
                 name: 'Heure de début',
-                stat: stats[stats.indexOf(stats.find(stat => stat.name === "Début du live"))].median
+                stat: stats.startedAt.median
             },
             {
                 name: 'Heure de début de jeu',
-                stat: stats[stats.indexOf(stats.find(stat => stat.name === "Début du jeu"))].median
+                stat: stats.gameStartedAt.median
             },
-            {name: 'Heure de fin', stat: stats[stats.indexOf(stats.find(stat => stat.name === "Fin du live"))].median},
+            {name: 'Heure de fin', stat: stats.endedAt.median},
         ]
     }, [stats]);
 
@@ -148,10 +154,12 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
         let gameFrequencyObject = {};
 
         for (let i = 0; i < streams.length; i++) {
-            if (gameFrequencyObject[streams[i].game_played]) {
-                gameFrequencyObject[streams[i].game_played] += 1;
-            } else {
-                gameFrequencyObject[streams[i].game_played] = 1;
+            for (let j = 0; j < streams[i].games.length; j++) {
+                if (gameFrequencyObject[streams[i].games[j].title]) {
+                    gameFrequencyObject[streams[i].games[j].title]++;
+                } else {
+                    gameFrequencyObject[streams[i].games[j].title] = 1;
+                }
             }
         }
 
@@ -168,11 +176,14 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
     const {gameTime, gameTimeLabels} = useMemo(() => {
         let gameTimeObject = {};
 
+        // in hours
         for (let i = 0; i < streams.length; i++) {
-            if (gameTimeObject[streams[i].game_played]) {
-                gameTimeObject[streams[i].game_played] += (streams[i].game_end - streams[i].game_start) / 60 / 60;
-            } else {
-                gameTimeObject[streams[i].game_played] = (streams[i].game_end - streams[i].game_start) / 60 / 60;
+            for (let j = 0; j < streams[i].games.length; j++) {
+                if (gameTimeObject[streams[i].games[j].title]) {
+                    gameTimeObject[streams[i].games[j].title] += (streams[i].games[j].end - streams[i].games[j].start) / 3600;
+                } else {
+                    gameTimeObject[streams[i].games[j].title] = (streams[i].games[j].end - streams[i].games[j].start) / 3600;
+                }
             }
         }
 
@@ -188,8 +199,29 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
 
     const streamRecords = useMemo(() => {
         const longuestStream = streams.sort((a, b) => b.duration - a.duration)[0];
-        const longuestTalk = streams.sort((a, b) => b.game_start + b.duration - b.game_end - (a.game_start + a.duration - a.game_end))[0];
-        const longuestGame = streams.sort((a, b) => b.game_end - b.game_start - (a.game_end - a.game_start))[0];
+        const longuestTalkIndex = streams.reduce((acc, stream, index) => {
+            const talkduration = stream.games.reduce((acc2, game, index) => {
+                if (index === 0) {
+                    return game.start;
+                }
+                return acc2 + game.start - stream.games[index - 1].end;
+            }, 0);
+            if (acc.duration < talkduration) {
+                return {duration: talkduration, index};
+            }
+            return acc;
+        }, {duration: 0, index: 0});
+        const longuestGameIndex = streams.reduce((acc, stream, index) => {
+            const gameduration = stream.games.reduce((acc, game, index) => {
+                return acc + game.end - game.start;
+            }, 0);
+            if (acc.duration < gameduration) {
+                return {duration: gameduration, index};
+            }
+            return acc;
+        }, {duration: 0, index: 0});
+        const longuestTalk = streams[longuestTalkIndex.index];
+        const longuestGame = streams[longuestGameIndex.index];
         return [
             {
                 // longest stream

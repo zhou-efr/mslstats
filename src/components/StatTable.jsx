@@ -58,7 +58,7 @@ export default function StatTable({stats}) {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                            {stats.map((stat, index) => (
+                            {Object.keys(stats).map((key) => stats[key]).map((stat, index) => (
                                 <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                                         {stat.name}

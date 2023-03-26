@@ -10,8 +10,14 @@ export async function getServerSideProps(ctx) {
     const rawgames = await getGames();
     const streams = rawstreams.map(stream => {
         const {_doc} = stream;
-        return {..._doc, _id: _doc._id.toString(), started_at: _doc.started_at.getTime()};
+        return {
+            ..._doc,
+            _id: _doc._id.toString(),
+            started_at: _doc.started_at.getTime(),
+            games: _doc.games.map(game => ({...game._doc, _id: game._doc._id.toString()}))
+        };
     });
+
 
     const games = rawgames.map(game => {
         const { _doc } = game;

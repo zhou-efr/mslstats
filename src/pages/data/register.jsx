@@ -49,7 +49,7 @@ export const getServerSideProps = withPageAuthRequired({
 
 export default function RegisterPage({stream = {}, gamelist = []}) {
     const router = useRouter();
-
+    const [occupied, setOccupied] = useState(false);
     const [registration, setRegistration] = useState({
         id: stream.id,
         title: stream.title,
@@ -69,24 +69,47 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
     });
 
     const handleChange = (e) => {
+        if (occupied) return;
         const { name, value } = e.target;
         setRegistration({ ...registration, [name]: value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (occupied) return;
+        setOccupied(true);
+        const registered_stream = {
+            id: registration.id,
+            title: registration.title,
+            url: registration.url,
+            duration: registration.duration,
+            started_at: registration.started_at,
+
+            streamer_id: registration.streamer_id,
+            streamer_name: registration.streamer_name,
+
+            games: registration.games.map(game => {
+                return {
+                    title: game.title,
+                    start: game.start,
+                    end: game.end,
+                    planned: game.planned,
+                }
+            }).filter(game => game.title !== "").sort((a, b) => a.start - b.start),
+        }
 
         const res = await fetch("/api/db/streams", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(registration),
+            body: JSON.stringify(registered_stream),
         })
 
         if (res.status != 201) {
             console.log(res);
             alert("Internal error please retry");
+            setOccupied(false);
             // router.refresh()
             return;
         }
@@ -100,6 +123,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
     };
 
     const handleAddGame = () => {
+        if (occupied) return;
         setRegistration({
             ...registration, games: [...registration.games, {
                 title: "",
@@ -111,10 +135,12 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
     }
 
     const handleRemoveGame = (index) => {
+        if (occupied) return;
         setRegistration({...registration, games: registration.games.filter((_, i) => i !== index)});
     }
 
     const handleGameChange = (index, key, value) => {
+        if (occupied) return;
         const newGames = registration.games.map((game, i) => {
             if (i === index) {
                 return {...game, [key]: value};
@@ -312,7 +338,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                     </button>
                     <button
                         type="button"
-                        onClick={() => router.push("/data")}
+                        onClick={occupied ? () => router.push("/data") : undefined}
                         className="ml-3 rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     >
                         Cancel
