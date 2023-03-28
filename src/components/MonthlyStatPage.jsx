@@ -6,7 +6,7 @@ import StatTable from "@/components/StatTable";
 import {useMemo} from "react";
 import MonthlyRecords from "@/components/monthlyrecords";
 
-export const MonthlyStatPage = ({streams, games, monthlyText, month}) => {
+export const MonthlyStatPage = ({streams, games, monthlyText}) => {
     const stats = useMemo(() => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
@@ -124,7 +124,7 @@ export const MonthlyStatPage = ({streams, games, monthlyText, month}) => {
             numberOfStreams,
             numberOfChronoPhoto,
         })
-        if (month === 2) {
+        if (monthlyText === "Joseph est-ce que... Ca va ?") {
             return [
                 {
                     id: 1,
