@@ -6,7 +6,7 @@ import StatTable from "@/components/StatTable";
 import {useMemo} from "react";
 import MonthlyRecords from "@/components/monthlyrecords";
 
-export const MonthlyStatPage = ({streams, games, monthlyText}) => {
+export const MonthlyStatPage = ({streams, games, monthlyText, month}) => {
     const stats = useMemo(() => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
@@ -116,24 +116,56 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
     }, [streams]);
 
     const highlights = useMemo(() => {
-        return [
-            {
-                id: 1,
-                name: 'De pure gaming',
-                value: stats.gamesDuration.total
-            },
-            {id: 2, name: 'Chansons uniques et parfaites !', value: "Coming Soon"},
-            {
-                id: 3,
-                name: 'En moyenne de discutions passionnantes',
-                value: stats.preAndPostLiveDuration.average
-            },
-            {
-                id: 4,
-                name: 'Record de durée',
-                value: stats.duration.max
-            },
-        ]
+        const numberOfStreams = streams.filter(stream => stream.started_at > 1679050800000 && stream.started_at < 16803432000000).length;
+        const numberOfChronoPhoto = streams.filter(stream => stream.games.some(game => game.title === 'ChronoPhoto')).length;
+        console.log({
+            context: 'numberOfStreams',
+            startedAtExample: streams[0].started_at,
+            numberOfStreams,
+            numberOfChronoPhoto,
+        })
+        if (month === 2) {
+            return [
+                {
+                    id: 1,
+                    name: 'De pure gaming',
+                    value: stats.gamesDuration.total
+                },
+                {
+                    id: 2,
+                    name: 'de chance que ca parte en ChronoPhoto',
+                    value: Math.ceil((numberOfChronoPhoto / numberOfStreams) * 100).toString() + " %"
+                },
+                {
+                    id: 3,
+                    name: 'En moyenne de discutions passionnantes',
+                    value: stats.preAndPostLiveDuration.average
+                },
+                {
+                    id: 4,
+                    name: 'Record de durée',
+                    value: stats.duration.max
+                },
+            ]
+        } else {
+            return [
+                {
+                    id: 1,
+                    name: 'De pure gaming',
+                    value: stats.gamesDuration.total
+                },
+                {
+                    id: 2,
+                    name: 'En moyenne de discutions passionnantes',
+                    value: stats.preAndPostLiveDuration.average
+                },
+                {
+                    id: 3,
+                    name: 'Record de durée',
+                    value: stats.duration.max
+                },
+            ]
+        }
     }, [stats]);
 
     const highlightedMedian = useMemo(() => {
