@@ -6,8 +6,8 @@ export const addStream = async (newStream) => {
     try {
         await dbConnect();
 
-        const stream = Stream.create(newStream);
-        await updateGame(stream);
+        const stream = await Stream.create(newStream);
+        await updateGame(newStream);
 
         return stream
     } catch (error) {
