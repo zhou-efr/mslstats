@@ -56,7 +56,7 @@ export default function AboutPage() {
                                 <blockquote className="mt-6 text-xl font-semibold leading-8 text-white">
                                     <p>
                                         “Maître Filou spécialisé Coolos. Has Been de Youtube. Active le mode difficile
-                                        ou je m{"'"}ennuie. ”
+                                        ou je m{"{"'"}"}ennuie. ”
                                     </p>
                                 </blockquote>
                                 <figcaption className="mt-6 text-sm leading-6 text-gray-300">
@@ -74,17 +74,17 @@ export default function AboutPage() {
 
                             <div className="max-w-xl">
                                 <p className="mt-6">
-                                    Viewer de replay, c'est en regardant ma pile de side-projects non fini que j'en suis venu à réaliser une interface coolos pour rechercher
+                                    Viewer de replay, c{"'"}est en regardant ma pile de side-projects non fini que j{"'"}en suis venu à réaliser une interface coolos pour rechercher
                                     facilement des replays de streams 🔍.
                                 </p>
                                 <p className="mt-8">
-                                    Regardant principalement les streams de Mathieu Sommet (même si j'ai parfois plusieurs semaines de retard 😬),
-                                    je me suis inspiré de ce que fait Cyrial (<a target={"_blank"} className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j'ai utilisé la plateforme pour
+                                    Regardant principalement les streams de Mathieu Sommet (même si j{"'"}ai parfois plusieurs semaines de retard 😬),
+                                    je me suis inspiré de ce que fait Cyrial (<a target={"_blank"} className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j{"'"}ai utilisé la plateforme pour
                                     générer des petites statistiques fun.
                                 </p>
                                 <p className="mt-8">
-                                    Enfin, si vous comptez utiliser l'application, je ne peux que vous conseiller de lire la section <Link className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href={"/disclaimer"}>disclaimer</Link> qui
-                                    détaille le fonctionnement de l'application et la gestion des données utilisateur.
+                                    Enfin, si vous comptez utiliser l{"'"}application, je ne peux que vous conseiller de lire la section <Link className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href={"/disclaimer"}>disclaimer</Link> qui
+                                    détaille le fonctionnement de l{"'"}application et la gestion des données utilisateur.
                                 </p>
                                 <p className="mt-8">
                                     - Zhou
