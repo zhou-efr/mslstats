@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutPage() {
     return (
@@ -68,29 +69,25 @@ export default function AboutPage() {
                         <div className="text-base leading-7 text-gray-700 lg:max-w-lg">
                             <p className="text-base font-semibold leading-7 text-indigo-600">Mathieu Sommet Live Stats</p>
                             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                                Bienvenue sur le site dédié aux statistiques des streams de Mathieu Sommet !
+                                Bienvenue sur MSL Stats !
                             </h1>
 
                             <div className="max-w-xl">
                                 <p className="mt-6">
-                                    Ce site a été créé car j{"'"}apprécie beaucoup les lives de MSL et je voulais créer quelque chose de
-                                    fun autour de ses lives. Le but de ce site n{"'"}est pas de fournir des statistiques toxiques
-                                    ou de nuire à l{"'"}expérience de streaming de Mathieu Sommet, mais plutôt de créer une interface coolos et
-                                    pratique.
+                                    Viewer de replay, c'est en regardant ma pile de side-projects non fini que j'en suis venu à réaliser une interface coolos pour rechercher
+                                    facilement des replays de streams 🔍.
                                 </p>
                                 <p className="mt-8">
-                                    Je ne peux pas nier que ce site est inspiré de ce qui est déjà fait par un viewer de Ponce, mais en tant
-                                    que développeur, j{"'"}ai décidé de créer ma propre version. Bien que ce site puisse inclure des informations
-                                    sur le nombre de viewers ou autres données, cela ne sera ajouté que si cela est autorisé. De la même manière,
-                                    je supprimerai le site à l{"'"}instant où la modération / le streamer me le demandera.
+                                    Regardant principalement les streams de Mathieu Sommet (même si j'ai parfois plusieurs semaines de retard 😬),
+                                    je me suis inspiré de ce que fait Cyrial (<a target={"_blank"} className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j'ai utilisé la plateforme pour
+                                    générer des petites statistiques fun.
                                 </p>
                                 <p className="mt-8">
-                                    Enfin, je regarde principalement les rediffusions de lives et ce site me permet d{"'"}avoir une interface
-                                    plus ergonomique que celle de Twitch. J{"'"}espère que ce site vous plaira et qu{"'"}il vous permettra de découvrir
-                                    des fun facts sur les streams de MSL.
+                                    Enfin, si vous comptez utiliser l'application, je ne peux que vous conseiller de lire la section <Link className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href={"/disclaimer"}>disclaimer</Link> qui
+                                    détaille le fonctionnement de l'application et la gestion des données utilisateur.
                                 </p>
                                 <p className="mt-8">
-                                    - Chat-gpt (Zhou aussi en vrai)
+                                    - Zhou
                                 </p>
                             </div>
                         </div>
