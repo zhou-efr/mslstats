@@ -82,7 +82,7 @@ function AboutSection(props) {
           !isExpanded && 'lg:line-clamp-4'
         )}
       >
-        Viewer de replay, c'est en regardant ma pile de side-projects non fini que j'en suis venu à réaliser
+        Viewer de replay, c{"'"}est en regardant ma pile de side-projects non fini que j{"'"}en suis venu à réaliser
         une interface coolos pour rechercher facilement des replays de streams 🔍.
       </p>
       {!isExpanded && (
