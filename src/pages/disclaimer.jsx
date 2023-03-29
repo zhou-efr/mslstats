@@ -25,7 +25,7 @@ export default function Example() {
                             évolué pour un système libre-service permettant à chacun d{"'"}afficher les streams de son choix sur la page d{"'"}accueil.
                         </p>
                         <p className='my-3'>
-                            Pour parvenir à cela, l'authentification est gérée par un plan gratuit Auth0
+                            Pour parvenir à cela, l{"'"}authentification est gérée par un plan gratuit Auth0
                             (<a className='text-indigo-500 hover:text-indigo-700 active:text-pink-900' href="https://www.okta.com/privacy-policy/">lien RGPD</a>). Est ensuite sauvegardé dans une base de données
                             MongoDB Atlas (<a className='text-indigo-500 hover:text-indigo-700 active:text-pink-900' href="https://www.mongodb.com/legal/privacy-policy">lien RGPD</a>) la liste des streamers suivis au même titre
                             que l{"'"}email fourni à l{"'"}inscription.
