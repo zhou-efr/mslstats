@@ -82,9 +82,8 @@ function AboutSection(props) {
           !isExpanded && 'lg:line-clamp-4'
         )}
       >
-        Ce site a été créé car j{"'"}apprécie beaucoup les lives de MSL et je voulais créer quelque chose de
-        fun autour de ses lives. Je regarde principalement les rediffusions de lives et ce site me permet d{"'"}avoir
-        une interface plus ergonomique que celle de Twitch.
+        Viewer de replay, c'est en regardant ma pile de side-projects non fini que j'en suis venu à réaliser
+        une interface coolos pour rechercher facilement des replays de streams 🔍.
       </p>
       {!isExpanded && (
         <button
