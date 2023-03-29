@@ -79,7 +79,7 @@ export default function AboutPage() {
                                 </p>
                                 <p className="mt-8">
                                     Regardant principalement les streams de Mathieu Sommet (même si j{"'"}ai parfois plusieurs semaines de retard 😬),
-                                    je me suis inspiré de ce que fait Cyrial (<a target={"_blank"} className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j{"'"}ai utilisé la plateforme pour
+                                    je me suis inspiré de ce que fait Cyrial (<a rel="noreferrer" target={"_blank"} className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j{"'"}ai utilisé la plateforme pour
                                     générer des petites statistiques fun.
                                 </p>
                                 <p className="mt-8">
