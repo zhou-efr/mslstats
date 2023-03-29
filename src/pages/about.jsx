@@ -56,7 +56,7 @@ export default function AboutPage() {
                                 <blockquote className="mt-6 text-xl font-semibold leading-8 text-white">
                                     <p>
                                         “Maître Filou spécialisé Coolos. Has Been de Youtube. Active le mode difficile
-                                        ou je m{"{"'"}"}ennuie. ”
+                                        ou je m{"'"}ennuie. ”
                                     </p>
                                 </blockquote>
                                 <figcaption className="mt-6 text-sm leading-6 text-gray-300">
