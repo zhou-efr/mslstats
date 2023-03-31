@@ -1,12 +1,12 @@
 import StatsWithBackground from "@/components/StatsWithBackground";
-import {GameFrequencyChartDonnut} from "@/components/GameFrequencyChartDonnut";
-import {GameTimeChartRadar} from "@/components/GameTimeChartRadar";
+import { GameFrequencyChartDonnut } from "@/components/GameFrequencyChartDonnut";
+import { GameTimeChartRadar } from "@/components/GameTimeChartRadar";
 import AverageTime from "@/components/AverageTime";
 import StatTable from "@/components/StatTable";
-import {useMemo} from "react";
+import { useMemo } from "react";
 import MonthlyRecords from "@/components/monthlyrecords";
 
-export const MonthlyStatPage = ({streams, games, monthlyText}) => {
+export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
     const stats = useMemo(() => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
@@ -178,11 +178,11 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
                 name: 'Heure de début de jeu',
                 stat: stats.gameStartedAt.median
             },
-            {name: 'Heure de fin', stat: stats.endedAt.median},
+            { name: 'Heure de fin', stat: stats.endedAt.median },
         ]
     }, [stats]);
 
-    const {gameFrequency, gameFrequencyLabels} = useMemo(() => {
+    const { gameFrequency, gameFrequencyLabels } = useMemo(() => {
         let gameFrequencyObject = {};
 
         for (let i = 0; i < streams.length; i++) {
@@ -196,16 +196,16 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
         }
 
         return Object.entries(gameFrequencyObject)
-            .map(([name, value]) => ({name, value}))
+            .map(([name, value]) => ({ name, value }))
             .sort((a, b) => b.value - a.value)
             .reduce((acc, game) => {
                 acc.gameFrequency.push(game.value);
                 acc.gameFrequencyLabels.push(game.name);
                 return acc;
-            }, {gameFrequency: [], gameFrequencyLabels: []});
+            }, { gameFrequency: [], gameFrequencyLabels: [] });
     }, [streams]);
 
-    const {gameTime, gameTimeLabels} = useMemo(() => {
+    const { gameTime, gameTimeLabels } = useMemo(() => {
         let gameTimeObject = {};
 
         // in hours
@@ -220,13 +220,13 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
         }
 
         return Object.entries(gameTimeObject)
-            .map(([name, value]) => ({name, value}))
+            .map(([name, value]) => ({ name, value }))
             .sort((a, b) => b.value - a.value)
             .reduce((acc, game) => {
                 acc.gameTime.push(game.value);
                 acc.gameTimeLabels.push(game.name);
                 return acc;
-            }, {gameTime: [], gameTimeLabels: []});
+            }, { gameTime: [], gameTimeLabels: [] });
     }, [streams]);
 
     const streamRecords = useMemo(() => {
@@ -239,21 +239,36 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
                 return acc2 + game.start - stream.games[index - 1].end;
             }, 0);
             if (acc.duration < talkduration) {
-                return {duration: talkduration, index};
+                const game_planned_name = stream.games.reduce((acc, game, index) => {
+                    if (game.planned)
+                        return game.title;
+                    return acc;
+                }, stream.games[0].title);
+                return { duration: talkduration, index, game: game_planned_name };
             }
             return acc;
-        }, {duration: 0, index: 0});
+        }, { duration: 0, index: 0, game: "" });
         const longuestGameIndex = streams.reduce((acc, stream, index) => {
             const gameduration = stream.games.reduce((acc, game, index) => {
                 return acc + game.end - game.start;
             }, 0);
             if (acc.duration < gameduration) {
-                return {duration: gameduration, index};
+                const game_planned_name = stream.games.reduce((acc, game, index) => {
+                    if (game.planned)
+                        return game.title;
+                    return acc;
+                }, stream.games[0].title);
+                return { duration: gameduration, index, game: game_planned_name };
             }
             return acc;
-        }, {duration: 0, index: 0});
+        }, { duration: 0, index: 0, game: "" });
         const longuestTalk = streams[longuestTalkIndex.index];
         const longuestGame = streams[longuestGameIndex.index];
+        const longuestStreamGame = longuestStream.games.reduce((acc, game, index) => {
+            if (game.planned)
+                return game.title;
+            return acc;
+        }, longuestStream.games[0].title);
         return [
             {
                 // longest stream
@@ -261,7 +276,7 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
                 title: "Stream le plus long :",
                 name: longuestStream.title,
                 href: longuestStream.url,
-                imageUrl: games?.find((game, index) => game.title === longuestStream.game_played)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                imageUrl: games?.find((game, index) => game.title === longuestStreamGame)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestStream.started_at).toDateString(),
                 stat: durationToTime(longuestStream.duration),
             },
@@ -271,7 +286,7 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
                 title: "La plus longue discution : ",
                 name: longuestTalk.title,
                 href: longuestTalk.url,
-                imageUrl: games?.find((game, index) => game.title === longuestTalk.game_played)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                imageUrl: games?.find((game, index) => game.title === longuestTalkIndex.game)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestTalk.started_at).toDateString(),
                 stat: durationToTime(longuestTalk.game_start + longuestTalk.duration - longuestTalk.game_end),
             },
@@ -281,7 +296,7 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
                 title: "La plus grosse session de g@m1ng : ",
                 name: longuestGame.title,
                 href: longuestGame.url,
-                imageUrl: games?.find((game, index) => game.title === longuestGame.game_played)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
+                imageUrl: games?.find((game, index) => game.title === longuestGameIndex.game)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestGame.started_at).toDateString(),
                 stat: durationToTime(longuestGame.game_end - longuestGame.game_start),
             },
@@ -290,20 +305,20 @@ export const MonthlyStatPage = ({streams, games, monthlyText}) => {
 
     return (
         <>
-            <StatsWithBackground {...{highlights, monthlyText}}/>
+            <StatsWithBackground {...{ highlights, monthlyText }} />
             <div className="w-full flex flex-wrap justify-around my-24">
                 <div className={"flex flex-col items-center w-full lg:w-1/2 h-[30rem]"}>
                     <h3 className="text-base font-semibold leading-6 text-gray-900">Fréquence des jeux</h3>
-                    <GameFrequencyChartDonnut inputdata={gameFrequency} inputdataLabels={gameFrequencyLabels}/>
+                    <GameFrequencyChartDonnut inputdata={gameFrequency} inputdataLabels={gameFrequencyLabels} />
                 </div>
                 <div className={"flex flex-col items-center w-full lg:w-1/2 h-96 lg:h-[30rem]"}>
                     <h3 className="text-base font-semibold leading-6 text-gray-900">Temps de jeu</h3>
-                    <GameTimeChartRadar inputdata={gameTime} inputdataLabels={gameTimeLabels}/>
+                    <GameTimeChartRadar inputdata={gameTime} inputdataLabels={gameTimeLabels} />
                 </div>
             </div>
-            <AverageTime {...{highlightedMedian}}/>
-            <MonthlyRecords records={streamRecords}/>
-            <StatTable {...{stats}}/>
+            <AverageTime {...{ highlightedMedian }} />
+            <MonthlyRecords records={streamRecords} />
+            <StatTable {...{ stats }} />
         </>
     )
 }
