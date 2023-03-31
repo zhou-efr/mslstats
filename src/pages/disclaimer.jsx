@@ -66,7 +66,7 @@ export default function Example() {
                             <li className="flex gap-x-3">
                                 <ShieldCheckIcon className="mt-1 h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
                                 <span>
-                                    <strong className="font-semibold text-gray-900">Vercel</strong> <a rel="noreferrer" target={"_blank"} className='text-indigo-500 hover:text-indigo-700 active:text-pink-900' href="https://vercel.com/security">Security notice</a>
+                                    <strong className="font-semibold text-gray-900">Vercel</strong> <a rel="noreferrer" target={"_blank"} className='text-indigo-500 hover:text-indigo-700 active:text-pink-900' href="https://vercel.com/security">Security notice</a> / <a rel="noreferrer" target={"_blank"} className='text-indigo-500 hover:text-indigo-700 active:text-pink-900' href="https://vercel.com/docs/concepts/analytics/privacy">analytics privacy</a>
                                 </span>
                             </li>
                             <li className="flex gap-x-3">
