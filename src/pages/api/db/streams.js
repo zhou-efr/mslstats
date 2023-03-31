@@ -1,8 +1,14 @@
-import {addStream} from "@mongo/Stream/addStream";
-import {withApiAuthRequired} from "@auth0/nextjs-auth0";
+import { addStream } from "@mongo/Stream/addStream";
+import { withApiAuthRequired } from "@auth0/nextjs-auth0";
 
 
 export default withApiAuthRequired(async function handler(req, res) {
+    const { user } = await getSession(req, res);
+
+    if (!isAdministrator(user.email)) {
+        res.status(403).end();
+        return;
+    }
     const stream = req.body;
 
     let status = 201;

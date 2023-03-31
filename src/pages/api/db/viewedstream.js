@@ -1,9 +1,9 @@
-import {getSession, withApiAuthRequired} from "@auth0/nextjs-auth0";
-import {addViewedStream} from "@mongo/user/addViewedStream";
+import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { addViewedStream } from "@mongo/user/addViewedStream";
 
 export default withApiAuthRequired(async function handler(req, res) {
-    const {streamid} = req.body;
-    const {user} = await getSession(req, res);
+    const { streamid } = req.body;
+    const { user } = await getSession(req, res);
 
     console.log({
         context: 'viewedstream',
