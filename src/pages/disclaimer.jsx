@@ -1,5 +1,5 @@
-import { Container } from '@/components/Container'
-import { CheckCircleIcon, InformationCircleIcon, ShieldCheckIcon } from '@heroicons/react/20/solid'
+import {Container} from '@/components/Container'
+import {CheckCircleIcon, ShieldCheckIcon} from '@heroicons/react/20/solid'
 
 export default function Example() {
     return (

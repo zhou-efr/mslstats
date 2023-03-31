@@ -1,4 +1,4 @@
-import { getLatestStream } from "@twitch/getLatestStream";
+import {getLatestStream} from "@twitch/getLatestStream";
 
 export default async function handler(req, res) {
     const { user_id } = req.body;
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     let response = {};
 
     try {
-        const stream = await getLatestStream(user_id, first = 31, period = "month");
+        const stream = await getLatestStream(user_id, 31, "month");
         response = { stream };
     } catch (error) {
         console.log(error);

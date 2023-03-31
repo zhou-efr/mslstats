@@ -1,5 +1,6 @@
 import {addStream} from "@mongo/Stream/addStream";
 import {getSession, withApiAuthRequired} from "@auth0/nextjs-auth0";
+import {isAdministrator} from "@/lib/auth0/administrators";
 
 
 export default withApiAuthRequired(async function handler(req, res) {

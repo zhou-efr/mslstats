@@ -33,7 +33,7 @@ export const getServerSideProps = withPageAuthRequired({
         const gamelist = (await getGames()).map(game => game.title);
 
         // 4h11m44s to number second
-        const duration = stream.duration.split("h").map((e) => e.split("m").map((e) => e.split("s"))).flat().filter((e) => e != "").map((e) => parseInt(e));
+        const duration = stream.duration.split("h").map((e) => e.split("m").map((e) => e.split("s"))).flat().filter((e) => e !== "").map((e) => parseInt(e));
         const duration_sec = duration[0] * 3600 + duration[1] * 60 + duration[2];
 
         stream.duration = duration_sec;
@@ -106,7 +106,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
             body: JSON.stringify(registered_stream),
         })
 
-        if (res.status != 201) {
+        if (res.status !== 201) {
             console.log(res);
             alert("Internal error please retry");
             setOccupied(false);

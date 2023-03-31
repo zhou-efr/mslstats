@@ -1,4 +1,4 @@
-import { getToken } from '@/lib/twitch/getToken'
+import {getToken} from '@/lib/twitch/getToken'
 
 export const getStream = async (stream_id) => {
     try {
@@ -23,7 +23,7 @@ export const getStream = async (stream_id) => {
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded, requestOptions);
         const data = await res.json();
 
-        if (res.status != 200) {
+        if (res.status !== 200) {
             throw new Error(`getLatestStream - ${res.status} : ${JSON.stringify(data)}`);
         }
 

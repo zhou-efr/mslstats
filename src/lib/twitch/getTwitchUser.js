@@ -1,4 +1,4 @@
-import { getToken } from '@/lib/twitch/getToken'
+import {getToken} from '@/lib/twitch/getToken'
 
 export const getTwitchUser = async (username) => {
     try {
@@ -22,7 +22,7 @@ export const getTwitchUser = async (username) => {
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/users?" + urlencoded, requestOptions);
         const data = await res.json();
 
-        if (res.status != 200) {
+        if (res.status !== 200) {
             throw new Error(`getUser - ${res.status} : ${JSON.stringify(data)}`);
         }
 

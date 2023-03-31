@@ -1,4 +1,4 @@
-import { getToken } from '@/lib/twitch/getToken'
+import {getToken} from '@/lib/twitch/getToken'
 
 export const getLatestStream = async (user_id, first = 3, period = "") => {
     try {
@@ -12,7 +12,7 @@ export const getLatestStream = async (user_id, first = 3, period = "") => {
         urlencoded.append("sort", "time");
         urlencoded.append("first", first);
 
-        if (period != "") {
+        if (period !== "") {
             urlencoded.append("period", period);
         }
 
@@ -27,7 +27,7 @@ export const getLatestStream = async (user_id, first = 3, period = "") => {
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded, requestOptions);
         const data = await res.json();
 
-        if (res.status != 200) {
+        if (res.status !== 200) {
             throw new Error(`getLatestStream - ${res.status} : ${JSON.stringify(data)}`);
         }
 

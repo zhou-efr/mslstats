@@ -17,7 +17,7 @@ export const getToken = async () => {
     const res = await fetch(process.env["TWITCH_TOKEN_URL"] + "/oauth2/token", requestOptions);
     const data = await res.json();
 
-    if (res.status != 200) {
+    if (res.status !== 200) {
         throw new Error(`getToken - ${res.status} : ${data}`);
     }
 
