@@ -1,5 +1,5 @@
-import { withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { updateGames } from "@mongo/Game/updateGames";
+import {getSession, withApiAuthRequired} from "@auth0/nextjs-auth0";
+import {updateGames} from "@mongo/Game/updateGames";
 
 
 export default withApiAuthRequired(async function handler(req, res) {
