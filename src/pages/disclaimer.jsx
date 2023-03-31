@@ -57,8 +57,8 @@ export default function Example() {
                         </p>
                         <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">Au sujet de la sécurité</h2>
                         <p className="mt-6">
-                            D'expérience, la meilleure manière d'avoir un site sûr et des données en sécurité est de laisser les autres faire.
-                            Ainsi, vous pourrez retrouver dans les notices de confidentialité des SaaS que j'utilise une multitude de sécurités.
+                            D{"'"}expérience, la meilleure manière d{"'"}avoir un site sûr et des données en sécurité est de laisser les autres faire.
+                            Ainsi, vous pourrez retrouver dans les notices de confidentialité des SaaS que j{"'"}utilise une multitude de sécurités.
                             Pour résumer, ils utilisent les standards en termes de chiffrement des données au repos et en transit ainsi que de
                             sécurité physique et logiciel.
                         </p>
@@ -89,14 +89,14 @@ export default function Example() {
                             </li>
                         </ul>
                         <p className="mt-6">
-                            De mon côté, j'ai prêté attention aux recommandations de l'ANSSI, aux mots de passe des comptes de services, ainsi
-                            qu'à ce que tout accès en écriture aux bases de données soit contrôlé (accès administrateur uniquement ou accès
-                            limité). Cela peut sembler très fancy dit comme ça, mais en réalité, c'est très basique (et suffisant).
+                            De mon côté, j{"'"}ai prêté attention aux recommandations de l{"'"}ANSSI, aux mots de passe des comptes de services, ainsi
+                            qu{"'"}à ce que tout accès en écriture aux bases de données soit contrôlé (accès administrateur uniquement ou accès
+                            limité). Cela peut sembler très fancy dit comme ça, mais en réalité, c{"'"}est très basique (et suffisant).
                         </p>
 
                         <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">Pour conclure</h2>
                         <p className="mt-6">
-                            En somme, je ne conserve rien et n'utilise rien pour autre chose que ce à quoi sert l'application. En outre, j'essaie
+                            En somme, je ne conserve rien et n{"'"}utilise rien pour autre chose que ce à quoi sert l{"'"}application. En outre, j{"'"}essaie
                             de faire les choses correctement autant pour éviter les problèmes que pour ne pas en avoir moi-même.
                         </p>
                         <p className="mt-6">
