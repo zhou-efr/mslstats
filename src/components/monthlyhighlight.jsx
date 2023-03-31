@@ -1,11 +1,11 @@
 const navigation = [
-    {name: 'Product', href: '#'},
-    {name: 'Features', href: '#'},
-    {name: 'Marketplace', href: '#'},
-    {name: 'Company', href: '#'},
+    { name: 'Product', href: '#' },
+    { name: 'Features', href: '#' },
+    { name: 'Marketplace', href: '#' },
+    { name: 'Company', href: '#' },
 ]
 
-export default function MonthlyHighlight({month}) {
+export default function MonthlyHighlight({ month }) {
 
     return (
         <>
@@ -22,10 +22,10 @@ export default function MonthlyHighlight({month}) {
                             Ca pique Endoloris...
                         </h1>
                         <p className="mt-6 text-lg leading-8 text-gray-600 flex flex-col items-center gap-3 ">
-                            C{"'"}est après avoir enflammé les salles de Poudlard que Maltazard Voldesub revient un
-                            nouveau single pour ravir vos oreilles.
+                            C{"'"}est après avoir enflammé les salles de Poudlard que Maltazard Voldesub revient
+                            sous le pseudonyme de <em>PoliceMan</em> avec un nouveau single pour ravir vos oreilles.
                             <audio controls
-                                   src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"}/>
+                                src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"} />
                         </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <a
@@ -35,7 +35,7 @@ export default function MonthlyHighlight({month}) {
                                 Voir le stream
                             </a>
                             <a href="https://clips.twitch.tv/AntsyOddYakinikuAliens-fJlAOzeqmId0XgTW"
-                               className="text-sm font-semibold leading-6 text-gray-900">
+                                className="text-sm font-semibold leading-6 text-gray-900">
                                 Voir l{"'"}extrait <span aria-hidden="true">→</span>
                             </a>
                         </div>
@@ -61,8 +61,8 @@ export default function MonthlyHighlight({month}) {
                                 y2="474.645"
                                 gradientUnits="userSpaceOnUse"
                             >
-                                <stop stopColor="#9089FC"/>
-                                <stop offset={1} stopColor="#FF80B5"/>
+                                <stop stopColor="#9089FC" />
+                                <stop offset={1} stopColor="#FF80B5" />
                             </linearGradient>
                         </defs>
                     </svg>
