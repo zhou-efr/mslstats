@@ -100,7 +100,7 @@ export default function Example() {
                             de faire les choses correctement autant pour éviter les problèmes que pour ne pas en avoir moi-même.
                         </p>
                         <p className="mt-6">
-                            Pour plus de questions, de demandes de suppression, etc., pinguez-moi sur Discord ou envoyez un e-mail à zhouefr@gmail.com.
+                            Pour plus de questions, de demandes de suppression, etc., pinguez-moi sur Discord ou envoyez un e-mail à <a rel="noreferrer" target={"_blank"} className='text-indigo-500 hover:text-indigo-700 active:text-pink-900' href="mailto:zhouefr@gmail.com">zhouefr@gmail.com</a>.
                         </p>
                         <p className="mt-6">
                             Bien à vous,<br />
