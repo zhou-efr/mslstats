@@ -17,17 +17,18 @@ export default function MonthlyHighlight({ month }) {
                             Ce mois ci en exclusivité sur <em>Mathieu Sommet Live</em>.
                         </div>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center flex flex-col items-center gap-3">
                         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                             Ca pique Endoloris...
                         </h1>
-                        <p className="mt-6 text-lg leading-8 text-gray-600 flex flex-col items-center gap-3 ">
+                        <p className="mt-6 text-lg leading-8 text-gray-600  ">
                             C{"'"}est après avoir enflammé les salles de Poudlard que Maltazard Voldesub revient
-                            sous le pseudonyme de <span className={"italic"}>PoliceMan</span> avec un nouveau single
+                            sous le pseudonyme de <span className={"italic inline"}>PoliceMan</span> avec un nouveau
+                            single
                             pour ravir vos oreilles.
-                            <audio controls
-                                   src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"}/>
                         </p>
+                        <audio controls
+                               src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"}/>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <a
                                 href="https://www.twitch.tv/videos/1755622208"
@@ -36,7 +37,7 @@ export default function MonthlyHighlight({ month }) {
                                 Voir le stream
                             </a>
                             <a href="https://clips.twitch.tv/AntsyOddYakinikuAliens-fJlAOzeqmId0XgTW"
-                                className="text-sm font-semibold leading-6 text-gray-900">
+                               className="text-sm font-semibold leading-6 text-gray-900">
                                 Voir l{"'"}extrait <span aria-hidden="true">→</span>
                             </a>
                         </div>
