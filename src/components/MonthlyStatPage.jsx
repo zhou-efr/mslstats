@@ -1,9 +1,9 @@
 import StatsWithBackground from "@/components/StatsWithBackground";
-import { GameFrequencyChartDonnut } from "@/components/GameFrequencyChartDonnut";
-import { GameTimeChartRadar } from "@/components/GameTimeChartRadar";
+import {GameFrequencyChartDonnut} from "@/components/GameFrequencyChartDonnut";
+import {GameTimeChartRadar} from "@/components/GameTimeChartRadar";
 import AverageTime from "@/components/AverageTime";
 import StatTable from "@/components/StatTable";
-import { useMemo } from "react";
+import {useMemo} from "react";
 import MonthlyRecords from "@/components/monthlyrecords";
 
 export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
@@ -288,7 +288,7 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
                 href: longuestTalk.url,
                 imageUrl: games?.find((game, index) => game.title === longuestTalkIndex.game)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestTalk.started_at).toDateString(),
-                stat: durationToTime(longuestTalk.game_start + longuestTalk.duration - longuestTalk.game_end),
+                stat: durationToTime(longuestTalk.games[0].start + longuestTalk.duration - longuestTalk.games.slice(-1)[0].end),
             },
             {
                 // longest game
@@ -298,7 +298,7 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
                 href: longuestGame.url,
                 imageUrl: games?.find((game, index) => game.title === longuestGameIndex.game)?.thumbnail || "https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/noImage.png",
                 date: new Date(longuestGame.started_at).toDateString(),
-                stat: durationToTime(longuestGame.game_end - longuestGame.game_start),
+                stat: durationToTime(longuestGame.games.slice(-1)[0].end - longuestGame.games[0].start),
             },
         ]
     }, [streams]);
