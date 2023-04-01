@@ -23,9 +23,10 @@ export default function MonthlyHighlight({ month }) {
                         </h1>
                         <p className="mt-6 text-lg leading-8 text-gray-600 flex flex-col items-center gap-3 ">
                             C{"'"}est après avoir enflammé les salles de Poudlard que Maltazard Voldesub revient
-                            sous le pseudonyme de <em>PoliceMan</em> avec un nouveau single pour ravir vos oreilles.
+                            sous le pseudonyme de <span className={"italic"}>PoliceMan</span> avec un nouveau single
+                            pour ravir vos oreilles.
                             <audio controls
-                                src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"} />
+                                   src={"https://github.com/zhou-efr/CDN/blob/main/mslstats/songs/capiqueendoloris.m4a?raw=true"}/>
                         </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <a
