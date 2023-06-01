@@ -2,16 +2,16 @@ import Game from "@mongo/Game/GameModel";
 
 export async function updateGame(stream) {
     for (const game of stream.games) {
-        // console.log({
+        console.log({
             context: 'updateGame',
             game: game.title,
             stream: stream.title,
 
         })
         const gameInDb = await Game.findOne({title: game.title}).exec();
-        // // console.log("CA PASSE OU PAS ?!")
+        // console.log("CA PASSE OU PAS ?!")
         if (gameInDb) {
-            // // console.log({
+            // console.log({
             //     context: 'updateGame - gameInDb',
             //     gameInDb: gameInDb,
             // })
@@ -24,7 +24,7 @@ export async function updateGame(stream) {
 
             await gameInDb.save();
         } else {
-            // // console.log("ET LA ? ?!")
+            // console.log("ET LA ? ?!")
             const newGame = await Game.create({
                 title: game.title,
                 expectedDuration: 0,
@@ -33,7 +33,7 @@ export async function updateGame(stream) {
                 numberOfSessions: 1,
                 sessions: [stream.id],
             });
-            // // console.log({
+            // console.log({
             //     context: 'updateGame - gameInDb create',
             //     newGame: newGame,
             // })

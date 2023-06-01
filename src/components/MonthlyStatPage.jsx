@@ -45,8 +45,6 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
             max: SecondsToTime(gamesEndedAt.sort((a, b) => a - b)[gamesEndedAt.length - 1]),
         }
 
-        // console.log({gameEndedAt, gamesEndedAt});
-
         const streamDuration = streams.map(stream => stream.duration);
         const streamPreLiveDuration = streams.map(stream => stream.games.reduce((acc, game, index) => {
             if (index === 0) {
@@ -120,7 +118,7 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
     const highlights = useMemo(() => {
         const numberOfStreams = streams.filter(stream => stream.started_at > 1679050800000 && stream.started_at < 16803432000000).length;
         const numberOfChronoPhoto = streams.filter(stream => stream.games.some(game => game.title === 'ChronoPhoto')).length;
-        // console.log({
+        console.log({
             context: 'numberOfStreams',
             startedAtExample: streams[0].started_at,
             numberOfStreams,

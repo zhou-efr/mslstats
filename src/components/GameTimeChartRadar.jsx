@@ -36,7 +36,7 @@ export const GameTimeChartRadar = ({inputdata, inputdataLabels}) => {
     }
 
 
-    // console.log(options)
+    console.log(options)
 
     return <Radar data={data} options={options}/>
 }

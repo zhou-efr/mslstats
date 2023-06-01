@@ -10,12 +10,12 @@ export default async function handler(req, res) {
         const user = await getTwitchUser(username);
         response = { user };
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         status = 500;
         response = { error };
     }
 
-    // console.log(`status: ${status}, response: ${JSON.stringify(response)}`);
+    console.log(`status: ${status}, response: ${JSON.stringify(response)}`);
 
     res.status(status).json(response);
 }
