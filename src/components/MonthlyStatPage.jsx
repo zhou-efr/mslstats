@@ -11,7 +11,7 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
         const gamesStartedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.games[0].start);
-        const gamesEndedAt = streams.map((stream, index) => unixWithoutDate(stream.started_at) + stream.games[stream.games.length - 1].end);
+        const gamesEndedAt = streams.map((stream, index) => unixWithoutDate(stream.started_at) + stream.duration - stream.games[stream.games.length - 1].end);
 
         const startedAt = {
             name: "Début du live",
