@@ -24,7 +24,13 @@ export async function getServerSideProps(ctx) {
         return { ..._doc, _id: _doc._id.toString() };
     });
 
-    const month = new Date().getMonth();
+    const { params } = ctx;
+    let { month } = params;
+    if (month && parseInt(month[0]) && months[parseInt(month[0])-1]) {
+        month = parseInt(month[0]) - 1;        
+    } else {
+        month = new Date().getMonth();
+    }
 
     return {
         props: {
