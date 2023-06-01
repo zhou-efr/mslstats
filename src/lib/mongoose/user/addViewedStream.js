@@ -16,7 +16,7 @@ export async function addViewedStream(email, streamer_id) {
             viewed_streams.push(streamer_id);
         }
 
-        console.log({
+        // console.log({
             context: 'addViewedStream',
             viewed_streams,
             user

@@ -10,7 +10,7 @@ export async function convertOldStreamGameToNew() {
             const stream = await Stream.findById(oldStreamGame[i]._id);
 
             if (stream.games) {
-                console.log(`skipping ${stream.title} (${stream.id})`);
+                // console.log(`skipping ${stream.title} (${stream.id})`);
                 continue;
             }
 
@@ -22,17 +22,17 @@ export async function convertOldStreamGameToNew() {
                 planned: stream.game_planned === stream.game_played,
             });
             if (stream.game_secondary) {
-                console.log("have game_secondary")
-                console.log(stream)
-                console.log("-------------------")
+                // console.log("have game_secondary")
+                // console.log(stream)
+                // console.log("-------------------")
                 games.push({
                     title: stream.game_secondary,
                     planned: stream.game_planned === stream.game_secondary,
                 });
             }
 
-            console.log("games")
-            console.log(games)
+            // console.log("games")
+            // console.log(games)
 
             stream.games = games;
 
@@ -43,7 +43,7 @@ export async function convertOldStreamGameToNew() {
             // delete stream.game_secondary;
 
             await stream.save();
-            console.log(`converted ${stream.title} (${stream.id})`);
+            // console.log(`converted ${stream.title} (${stream.id})`);
             //sleep 500ms to not get rate limited
             await new Promise(resolve => setTimeout(resolve, 500));
         }

@@ -18,7 +18,7 @@ export const getCurrentStream = async (user_id) => {
             redirect: 'follow'
         };
 
-        console.log(process.env["TWITCH_API_URL"] + "/helix/streams?" + urlencoded);
+        // console.log(process.env["TWITCH_API_URL"] + "/helix/streams?" + urlencoded);
 
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/streams?" + urlencoded, requestOptions);
         const data = await res.json();

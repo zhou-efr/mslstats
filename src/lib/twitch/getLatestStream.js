@@ -22,7 +22,7 @@ export const getLatestStream = async (user_id, first = 3, period = "") => {
             redirect: 'follow'
         };
 
-        console.log(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded);
+        // console.log(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded);
 
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/videos?" + urlencoded, requestOptions);
         const data = await res.json();

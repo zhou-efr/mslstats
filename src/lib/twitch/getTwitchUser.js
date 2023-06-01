@@ -17,7 +17,7 @@ export const getTwitchUser = async (username) => {
             redirect: 'follow'
         };
 
-        console.log(process.env["TWITCH_API_URL"] + "/helix/users?" + urlencoded);
+        // console.log(process.env["TWITCH_API_URL"] + "/helix/users?" + urlencoded);
 
         const res = await fetch(process.env["TWITCH_API_URL"] + "/helix/users?" + urlencoded, requestOptions);
         const data = await res.json();

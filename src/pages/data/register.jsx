@@ -107,7 +107,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
         })
 
         if (res.status !== 201) {
-            console.log(res);
+            // console.log(res);
             alert("Internal error please retry");
             setOccupied(false);
             // router.refresh()

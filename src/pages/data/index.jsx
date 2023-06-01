@@ -30,7 +30,7 @@ export const getServerSideProps = withPageAuthRequired({
 
     let streamsToReturn = [];
 
-    console.log(dbstreams);
+    // console.log(dbstreams);
 
     for (let i = 0; i < streams.length; i++) {
         const stream = streams[i];

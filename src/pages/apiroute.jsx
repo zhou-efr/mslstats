@@ -131,7 +131,7 @@ const StreamRoute = () => {
         setStreams(data.stream);
     }
 
-    console.log(streams);
+    // console.log(streams);
 
     return (
         <>
