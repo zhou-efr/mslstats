@@ -11,7 +11,7 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
         const streamsStartedAt = streams.map(stream => unixWithoutDate(stream.started_at));
         const streamsEndedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.duration);
         const gamesStartedAt = streams.map(stream => unixWithoutDate(stream.started_at) + stream.games[0].start);
-        const gamesEndedAt = streams.map((stream, index) => unixWithoutDate(stream.started_at) + stream.duration - stream.games[stream.games.length - 1].end);
+        const gamesEndedAt = streams.map((stream, index) => unixWithoutDate(stream.started_at) + stream.games[stream.games.length - 1].end);
 
         const startedAt = {
             name: "Début du live",
@@ -44,6 +44,8 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
             min: SecondsToTime(gamesEndedAt.sort((a, b) => a - b)[0]),
             max: SecondsToTime(gamesEndedAt.sort((a, b) => a - b)[gamesEndedAt.length - 1]),
         }
+
+        // console.log({gameEndedAt, gamesEndedAt});
 
         const streamDuration = streams.map(stream => stream.duration);
         const streamPreLiveDuration = streams.map(stream => stream.games.reduce((acc, game, index) => {
@@ -118,7 +120,7 @@ export const MonthlyStatPage = ({ streams, games, monthlyText }) => {
     const highlights = useMemo(() => {
         const numberOfStreams = streams.filter(stream => stream.started_at > 1679050800000 && stream.started_at < 16803432000000).length;
         const numberOfChronoPhoto = streams.filter(stream => stream.games.some(game => game.title === 'ChronoPhoto')).length;
-        console.log({
+        // console.log({
             context: 'numberOfStreams',
             startedAtExample: streams[0].started_at,
             numberOfStreams,

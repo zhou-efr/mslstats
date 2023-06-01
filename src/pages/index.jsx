@@ -110,9 +110,9 @@ const getMonthList = (month, year) => {
     const firstWeekOfMonth = firstDayOfMonth.getWeek();
     const firstDay = getDateOfWeek(firstWeekOfMonth, year);
 
-    // console.log(firstDay.toLocaleDateString("fr-FR"));
-    // console.log(firstDayOfMonth.toLocaleDateString("fr-FR"));
-    // console.log(firstWeekOfMonth);
+    // // console.log(firstDay.toLocaleDateString("fr-FR"));
+    // // console.log(firstDayOfMonth.toLocaleDateString("fr-FR"));
+    // // console.log(firstWeekOfMonth);
 
     // get the last day of the last week of the month
     const lastDayOfMonth = new Date(year, basedMonth + 1, 0);
@@ -120,9 +120,9 @@ const getMonthList = (month, year) => {
     const firstDayOfLastWeekOfMonth = getDateOfWeek(lastWeekOfMonth, year);
     const lastDay = new Date(firstDayOfLastWeekOfMonth.getTime() + 6 * 24 * 60 * 60 * 1000);
 
-    // console.log(lastDay.toLocaleDateString("fr-FR"));
-    // console.log(lastDayOfMonth.toLocaleDateString("fr-FR"));
-    // console.log(lastWeekOfMonth);
+    // // console.log(lastDay.toLocaleDateString("fr-FR"));
+    // // console.log(lastDayOfMonth.toLocaleDateString("fr-FR"));
+    // // console.log(lastWeekOfMonth);
 
     const basedMonthList = [];
     let i = firstDay;
@@ -183,8 +183,8 @@ export async function getServerSideProps(ctx) {
         }
     }
 
-    console.log(streams_by_day)
-    console.log(streamer_names)
+    // console.log(streams_by_day)
+    // console.log(streamer_names)
 
     return {
         props: {
@@ -225,12 +225,12 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
             selectedWeek = selectedWeek + 1;
         }
 
-        // console.log(streams);
-        // console.log(streams[selectedDay].filter((stream) => streamers.includes(stream.user_login)));
+        // // console.log(streams);
+        // // console.log(streams[selectedDay].filter((stream) => streamers.includes(stream.user_login)));
 
         if (view === "day") {
             toDisplay = streams[selectedDay]?.filter((stream) => {
-                console.log(streamers.includes(stream.user_login))
+                // console.log(streamers.includes(stream.user_login))
                 return streamers.includes(stream.user_login)
             }) || [];
         }
@@ -251,7 +251,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
             }
         }
 
-        console.log(toDisplay);
+        // console.log(toDisplay);
 
         return toDisplay || [];
     }, [streamers, streams, value, view]);
