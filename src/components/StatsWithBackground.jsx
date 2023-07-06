@@ -7,7 +7,7 @@ export default function StatsWithBackground({highlights, monthlyText}) {
         <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 rounded-lg">
             <Image
                 fill={true}
-                src="https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/mslbg.png"
+                src="https://raw.githubusercontent.com/zhou-efr/CDN/main/mslstats/images/newmslbg-2.png"
                 alt=""
                 className="absolute inset-0 -z-10 h-full w-full object-cover filter blur"
             />
@@ -37,7 +37,7 @@ export default function StatsWithBackground({highlights, monthlyText}) {
                     </defs>
                 </svg>
                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
-                    <h2 className="text-base font-semibold leading-8 text-indigo-400">Mars 2023</h2>
+                    <h2 className="text-base font-semibold leading-8 text-red-nekorporation-500">Mars 2023</h2>
                     <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
                         Mathieu Sommet Live
                     </p>

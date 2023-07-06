@@ -13,6 +13,10 @@ module.exports = {
         112: '28rem',
         120: '30rem',
       },
+      colors: {
+        'red-nekorporation-500': '#D92912',
+        'red-nekorporation-700': '#870E0D',
+      }
     },
   },
   plugins: [

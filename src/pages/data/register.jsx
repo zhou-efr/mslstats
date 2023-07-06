@@ -179,7 +179,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                         value={(new Date(registration[key])).toISOString().slice(0, 16)}
                                                         onChange={handleChange}
                                                         readOnly
-                                                        className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-nekorporation-500 sm:text-sm sm:leading-6"
                                                     />
                                                 </div>
                                             )
@@ -206,7 +206,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                     value={registration[key]}
                                                     onChange={handleChange}
                                                     readOnly
-                                                    className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-nekorporation-500 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         )
@@ -239,7 +239,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                     value={registration[key]}
                                                     onChange={handleChange}
                                                     readOnly
-                                                    className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-nekorporation-500 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         )
@@ -290,7 +290,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                 name={"start"}
                                                 id={"start"}
                                                 onChange={(e) => handleGameChange(index, "start", e.target.value)}
-                                                className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-nekorporation-500 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
@@ -304,7 +304,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                 name={"end"}
                                                 id={"end"}
                                                 onChange={(e) => handleGameChange(index, "end", e.target.value)}
-                                                className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-nekorporation-500 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
@@ -317,8 +317,8 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                                                 name={"planned"}
                                                 id={"planned"}
                                                 onChange={(e) => handleGameChange(index, "planned", e.target.checked)}
-                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                                // className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="h-4 w-4 rounded border-gray-300 text-red-nekorporation-500 focus:ring-red-nekorporation-500"
+                                                // className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-nekorporation-500 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                     </div>
@@ -345,7 +345,7 @@ export default function RegisterPage({stream = {}, gamelist = []}) {
                     </button>
                     <button
                         type="submit"
-                        className="ml-3 inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        className="ml-3 inline-flex justify-center rounded-md bg-red-nekorporation-500 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-red-nekorporation-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-nekorporation-500"
                     >
                         Save
                     </button>

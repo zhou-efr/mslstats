@@ -52,7 +52,7 @@ export default function Tabs() {
                 <select
                     id="tabs"
                     name="tabs"
-                    className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="block w-full rounded-md border-gray-300 focus:border-red-nekorporation-500 focus:ring-red-nekorporation-500"
                     defaultValue={tabs.find((tab) => tab.current)?.name}
                     onChange={(e) => handleChooseTab(tabs.find((tab) => tab.name === e.target.value))}
                 >

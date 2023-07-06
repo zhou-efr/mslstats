@@ -333,7 +333,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                     day.isSelected && 'text-white',
                                     !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900',
                                     !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400',
-                                    day.isToday && !day.isSelected && 'text-indigo-600',
+                                    day.isToday && !day.isSelected && 'text-red-nekorporation-500',
                                     dayIdx === 0 && 'rounded-tl-lg',
                                     dayIdx === 6 && 'rounded-tr-lg',
                                     dayIdx === days.length - 7 && 'rounded-bl-lg',
@@ -344,7 +344,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                     dateTime={day.date}
                                     className={classNames(
                                         'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                                        day.isSelected && day.isToday && 'bg-indigo-600',
+                                        day.isSelected && day.isToday && 'bg-red-nekorporation-500',
                                         day.isSelected && !day.isToday && 'bg-gray-900'
                                     )}
                                 >
@@ -378,7 +378,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                    alt="" className="h-14 w-14 flex-none rounded-md"/>
                             <div className="flex-auto">
                                 <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">
-                                    <Link href={meeting.url} className="hover:text-indigo-900 cursor-pointer">
+                                    <Link href={meeting.url} className="hover:text-red-nekorporation-700 cursor-pointer">
                                         {meeting.title}
                                     </Link>
                                 </h3>
@@ -413,7 +413,7 @@ export default function HomePage({ streams = [], basedMonth = 0, basedMonthList 
                                         </dd>
                                     </div>
                                     <div className="mt-2 flex items-center space-x-3 xl:mt-0 xl:ml-3.5 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
-                                        <Link href={meeting.url} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-indigo-600 hover:text-indigo-900"} cursor-pointer`}>
+                                        <Link href={meeting.url} className={`flex gap-3 items-center ${meeting.live ? "text-red-500 hover:text-red-900" : "text-red-nekorporation-500 hover:text-red-nekorporation-700"} cursor-pointer`}>
                                             <dt className="mt-0.5">
                                                 <span className="sr-only">Location</span>
                                                 <VideoCameraIcon className={`h-5 w-5 ${meeting.live ? "text-red-500" : "text-gray-400"}`} aria-hidden="true" />

@@ -12,7 +12,7 @@ const sizes = {
 
 const variants = {
     primary: {
-        variantClass: "bg-indigo-600 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
+        variantClass: "bg-red-nekorporation-500 font-semibold text-white shadow-sm hover:bg-red-nekorporation-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-nekorporation-500",
     },
     secondary: {
         variantClass: "bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50",

@@ -1,6 +1,6 @@
-# [MSL Stats](https://mslstats.azurewebsites.net/)
+# [MSL Stats](https://mslstats.vercel.app/)
 
-[![MSL logo](https://mslstats.azurewebsites.net/images/android/android-launchericon-96-96.png)](https://mslstats.azurewebsites.net/)
+[![MSL logo](https://raw.githubusercontent.com/zhou-efr/mslstats/main/src/images/newmslstat.png)](https://mslstats.vercel.app/)
 
 MSL Stats est une application en JavaScript basée sur l'architecture Next.js 12 qui utilise l'authentification Auth0 et une base de données MongoDB. La librairie Tailwind UI est utilisée pour la mise en page de l'application.
 

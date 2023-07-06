@@ -29,7 +29,7 @@ export default function GamesPage({games}) {
             {games.map((person) => (
                 <div
                     key={person._id}
-                    className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+                    className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-red-nekorporation-500 focus-within:ring-offset-2 hover:border-gray-400"
                 >
                     <div className="flex-shrink-0">
                         <Image className="h-10 w-10 rounded-full" src={person.thumbnail} alt="" width={40} height={40}/>

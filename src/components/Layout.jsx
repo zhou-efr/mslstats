@@ -5,7 +5,7 @@ import clsx from 'clsx'
 
 import { Container } from './Container'
 
-import mslicon from '@/images/logotest3.png'
+import mslicon from '@/images/newmslstat.png'
 import Tabs from './Tabs'
 
 function randomBetween(min, max, seed = 1) {
@@ -88,7 +88,7 @@ function AboutSection(props) {
       {!isExpanded && (
         <button
           type="button"
-          className="mt-2 hidden text-sm font-bold leading-6 text-indigo-500 hover:text-indigo-700 active:text-pink-900 lg:inline-block"
+          className="mt-2 hidden text-sm font-bold leading-6 text-red-nekorporation-500 hover:text-red-nekorporation-700 active:text-pink-900 lg:inline-block"
           onClick={() => setIsExpanded(true)}
         >
           Show more

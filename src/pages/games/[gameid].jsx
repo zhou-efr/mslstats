@@ -58,7 +58,7 @@ export async function getServerSideProps(ctx) {
                 date: _doc.started_at.toDateString(),
                 icon: twitch_user ? twitch_user.view_streams.includes(_doc.id) ? "CheckCircleIcon" : "UserIcon" : "UserIcon",
                 datetime: _doc.started_at.toLocaleDateString(),
-                iconBackground: twitch_user ? twitch_user.view_streams.includes(_doc.id) ? "bg-green-300" : "bg-indigo-300" : "bg-indigo-300",
+                iconBackground: twitch_user ? twitch_user.view_streams.includes(_doc.id) ? "bg-green-300" : "bg-red-nekorporation-500" : "bg-red-nekorporation-500",
             };
     }).filter(stream => stream !== undefined).sort((a, b) => (a.started_at > b.started_at) ? 1 : -1);
 
@@ -152,8 +152,8 @@ export default function GamePage({ streams, game }) {
                             <rect width="100%" height="100%" strokeWidth={0}
                                 fill="url(#e87443c8-56e4-4c20-9111-55b82fa704e3)" />
                         </svg>
-                        <figure className="border-l border-indigo-600 pl-8">
-                            <p className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Tous les lives
+                        <figure className="border-l border-red-nekorporation-500 pl-8">
+                            <p className="text-lg font-semibold leading-8 tracking-tight text-red-nekorporation-500">Tous les lives
                                 sur</p>
                             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-4">{game.title}</h1>
                             <blockquote className="text-xl font-semibold leading-8 tracking-tight text-gray-900">

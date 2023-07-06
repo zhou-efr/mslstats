@@ -70,7 +70,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                         <div className="text-base leading-7 text-gray-700 lg:max-w-lg">
-                            <p className="text-base font-semibold leading-7 text-indigo-600">Mathieu Sommet Live Stats</p>
+                            <p className="text-base font-semibold leading-7 text-red-nekorporation-500">Mathieu Sommet Live Stats</p>
                             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                                 Bienvenue sur MSL Stats !
                             </h1>
@@ -82,11 +82,11 @@ export default function AboutPage() {
                                 </p>
                                 <p className="mt-8">
                                     Regardant principalement les streams de Mathieu Sommet (même si j{"'"}ai parfois plusieurs semaines de retard 😬),
-                                    je me suis inspiré de ce que fait Cyrial (<a rel="noreferrer" target={"_blank"} className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j{"'"}ai utilisé la plateforme pour
+                                    je me suis inspiré de ce que fait Cyrial (<a rel="noreferrer" target={"_blank"} className="text-red-nekorporation-500 hover:text-red-nekorporation-700 active:text-pink-900" href="https://youtu.be/krvt0T5yoEk">exemple</a>) et j{"'"}ai utilisé la plateforme pour
                                     générer des petites statistiques fun.
                                 </p>
                                 <p className="mt-8">
-                                    Enfin, si vous comptez utiliser l{"'"}application, je ne peux que vous conseiller de lire la section <Link className="text-indigo-500 hover:text-indigo-700 active:text-pink-900" href={"/disclaimer"}>disclaimer</Link> qui
+                                    Enfin, si vous comptez utiliser l{"'"}application, je ne peux que vous conseiller de lire la section <Link className="text-red-nekorporation-500 hover:text-red-nekorporation-700 active:text-pink-900" href={"/disclaimer"}>disclaimer</Link> qui
                                     détaille le fonctionnement de l{"'"}application et la gestion des données utilisateur.
                                 </p>
                                 <p className="mt-8">
