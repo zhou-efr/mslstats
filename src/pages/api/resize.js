@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
     const { width, height } = req.query;
-    const { url, imageUrl } = req.query;
-    
+    let { url, imageUrl } = req.query;
+
     if (imageUrl && !url) {
         url = imageUrl;
     }
